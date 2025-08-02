@@ -39,3 +39,9 @@ To run this project locally:
 4. **Open the local server::**
    ```bash
    http://127.0.0.1:5000
+
+## Contact
+
+- Email: evanpriyasa.id@gmail.com
+- LinkedIn: https://www.linkedin.com/in/evan-julian-8aa5a2292/
+- GitHub: [Evan-Julian](https://github.com/Evan-Julian)
