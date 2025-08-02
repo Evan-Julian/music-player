@@ -1,44 +1,104 @@
-/* Import Font dari Google Fonts untuk tampilan yang lebih halus */
+/*
+=================================================================
+  TABLE OF CONTENTS
+=================================================================
+  1.  Global Styles & Setup
+      - Font Imports
+      - CSS Variables
+      - Global Resets & Typography
+      - Custom Scrollbars
+
+  2.  Core Layout
+      - Main Wrapper
+      - Sidebar
+      - Content Area
+
+  3.  Main Components
+      - Navbar & Search Bar
+      - Hero Banner
+      - Content Grids (Releases, Artists, etc.)
+      - Item Cards (Release, Artist, Playlist)
+
+  4.  Page-Specific Styles
+      - All Songs Page (List View)
+      - Detail Pages (Artist, Album, Playlist)
+      - Player Page
+      - Search Results
+
+  5.  Footer Music Player
+      - Main Container & Layout
+      - Player Info (Cover, Title)
+      - Visualizer
+      - Player Controls & Buttons
+      - Progress Bar
+      - Volume Controls
+      - Player Settings
+      - Mini Player Mode
+
+  6.  Sidepanels
+      - General Sidepanel Styles
+      - Queue Sidepanel
+      - Lyrics Sidepanel
+
+  7.  UI Feedback & Utilities
+      - Toast Messages
+      - Skeleton Loading Placeholders
+      - Custom Tooltips
+      - Empty State Messages
+      - Buttons & Forms
+
+  8.  Animations & Effects
+      - Keyframe Animations
+      - Hover & Transition Effects
+
+  9.  Responsive Design (Media Queries)
+      - max-width: 1200px
+      - max-width: 992px
+      - max-width: 768px
+      - max-width: 480px
+=================================================================
+*/
+
+/* ================================================================= */
+/* 1. Global Styles & Setup
+/* ================================================================= */
+
+/* Font Imports */
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap");
 
-/* === [TAMBAHAN] Fondasi Global & Efek Transisi === */
+/* CSS Variables */
 :root {
+  --footer-height: 80px;
+  --content-padding-bottom: 100px;
   --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   --accent-glow: 0 0 15px rgba(127, 90, 240, 0.5),
     0 0 20px rgba(127, 90, 240, 0.3);
 }
 
-body {
-  /* Penyesuaian untuk rendering font yang lebih baik di beberapa browser */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Global CSS Variables */
-:root {
-  --footer-height: 80px; /* Default full player height */
-  --content-padding-bottom: 100px; /* Default padding for content area, considering footer + some space */
-}
-
-/* Global Styles & Reset */
+/* Global Resets & Typography */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Sora", sans-serif;
-  background-color: #0b0b0e; /* Lebih gelap dari #11111e */
-  color: #e0e0e0; /* Warna teks umum, sedikit lebih lembut dari putih murni */
-  min-height: 100vh;
-  overflow-x: hidden;
-  display: flex;
-  font-size: 16px;
-  position: relative;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Overlay saat menu mobile aktif */
+body {
+  display: flex;
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0b0b0e 0%, #121216 100%);
+  color: #e0e0e0;
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body.mobile-menu-active {
   overflow-y: hidden;
 }
@@ -55,18 +115,18 @@ body.mobile-menu-active::before {
 }
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
 button {
+  padding: 0;
   background: none;
   border: none;
   color: inherit;
+  font-family: "Sora", sans-serif;
   cursor: pointer;
-  padding: 0;
-  font-family: "Sora", sans-serif; /* Pastikan font diterapkan juga pada button */
   transition: opacity 0.15s ease, transform 0.05s ease;
 }
 
@@ -85,81 +145,97 @@ ul {
 }
 
 img {
+  display: block;
   max-width: 100%;
   height: auto;
-  display: block;
 }
 
-/* Main Wrapper Layout */
+*:focus-visible {
+  outline: 2px solid #a18af7;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #535353;
+  border-radius: 10px;
+  border: 2px solid #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7a7a7a;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #535353 #1a1a2e;
+}
+
+/* ================================================================= */
+/* 2. Core Layout
+/* ================================================================= */
+
 .main-wrapper {
   display: flex;
   width: 100%;
   min-height: 100vh;
 }
 
-/* Sidebar Styling */
+/* --- Sidebar --- */
 .sidebar {
-  width: 260px;
-  background-color: #121216; /* Lebih gelap dari #1a1a2e */
-  padding: 25px 0;
+  display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.45);
   position: sticky;
   top: 0;
+  width: 260px;
   height: 100vh;
-  overflow-y: auto;
+  padding: 25px 0;
+  background-color: #121216;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.45);
   z-index: 100;
+  overflow-y: auto;
   transition: transform 0.3s ease-out;
-  display: flex; /* Tambahkan kembali display flex */
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: #121216;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #282830; /* Warna scrollbar yang lebih gelap */
-  border-radius: 3px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: #3a3a45;
 }
 
 .sidebar .logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 45px;
   padding: 0 20px;
+  margin-bottom: 45px;
 }
 
 .sidebar .logo img {
   width: 40px;
   height: 40px;
+  margin-right: 12px;
+  background-color: #7f5af0;
   border-radius: 50%;
   object-fit: cover;
-  background-color: #7f5af0; /* Ganti ke warna baru */
-  margin-right: 12px;
+  animation: logo-pulse-glow 4s infinite ease-in-out;
+  transition: transform 0.3s ease;
 }
 
 .sidebar .logo span {
   font-size: 1.7em;
-  font-weight: 700; /* Made bolder */
-  background: linear-gradient(
-    45deg,
-    #7f5af0,
-    #a18af7
-  ); /* Gradient for logo text */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent; /* Fallback */
+  font-weight: 700;
   letter-spacing: 0.8px;
+  background: linear-gradient(45deg, #7f5af0, #a18af7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .sidebar .main-nav ul {
@@ -174,18 +250,18 @@ img {
   display: flex;
   align-items: center;
   padding: 14px 28px;
-  color: #b3b3b3; /* Teks navigasi lebih lembut */
+  border-left: 4px solid transparent;
+  color: #b3b3b3;
   font-size: 1em;
   font-weight: 500;
   transition: background-color 0.2s ease, color 0.2s ease,
     border-left-color 0.2s ease;
-  border-left: 4px solid transparent;
 }
 
 .sidebar .main-nav a i {
+  width: 22px;
   margin-right: 20px;
   font-size: 1.1em;
-  width: 22px;
   text-align: center;
 }
 
@@ -198,40 +274,44 @@ img {
 
 .sidebar .main-nav a:hover,
 .sidebar .main-nav a.active {
-  background-color: #282830; /* Background hover/active lebih gelap */
-  color: #ffffff; /* Teks hover/active menjadi putih */
-  border-left-color: #7f5af0; /* Ganti ke warna baru */
+  background-color: #282830;
+  color: #ffffff;
+  border-left-color: #7f5af0;
 }
 
 .sidebar .main-nav a.active .fa-chevron-down {
   transform: rotate(180deg);
 }
 
+/* --- Content Area --- */
 .content-area {
   flex-grow: 1;
-  background-color: #0b0b0e; /* Sesuaikan dengan body background */
-  padding-bottom: var(--content-padding-bottom); /* Use CSS variable */
-  transition: padding-bottom 0.3s ease; /* Smooth transition for padding */
+  padding-bottom: var(--content-padding-bottom);
+  transition: padding-bottom 0.3s ease;
 }
 
-/* Navbar Styling */
+/* ================================================================= */
+/* 3. Main Components
+/* ================================================================= */
+
+/* --- Navbar & Search Bar --- */
 .navbar {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  padding: 20px 45px;
-  background-color: #121216; /* Sama dengan sidebar */
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.35);
-  z-index: 50;
+  justify-content: flex-start;
   position: sticky;
   top: 0;
+  padding: 20px 45px;
+  background-color: #121216;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.35);
+  z-index: 50;
 }
 
 .hamburger-menu {
   display: none;
+  margin-right: 20px;
   font-size: 1.6em;
   color: #e0e0e0;
-  margin-right: 20px;
   z-index: 102;
 }
 
@@ -241,59 +321,57 @@ img {
 }
 
 .navbar .nav-middle {
-  flex-grow: 1;
   display: flex;
-  justify-content: flex-start;
+  flex-grow: 1;
   align-items: center;
-  max-width: none;
+  justify-content: flex-start;
   margin: 0;
+  max-width: none;
 }
 
 .navbar .nav-middle .search-bar {
   display: flex;
   align-items: center;
-  background-color: #282830; /* Background search bar lebih gelap */
-  border-radius: 30px;
-  padding: 10px 22px;
   width: 380px;
+  padding: 10px 22px;
+  background-color: #282830;
+  border-radius: 30px;
   box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 .navbar .nav-middle .search-bar input {
+  width: calc(100% - 30px);
+  padding: 0;
   background: none;
   border: none;
   outline: none;
   color: #e0e0e0;
-  padding: 0;
   font-size: 1.05em;
-  width: calc(100% - 30px);
 }
 
 .navbar .nav-middle .search-bar input::placeholder {
-  color: #909090; /* Placeholder lebih gelap */
+  color: #909090;
 }
 
 .navbar .nav-middle .search-bar button {
-  color: #b3b3b3; /* Ikon search bar */
-  font-size: 1.2em;
   padding-left: 10px;
+  color: #b3b3b3;
+  font-size: 1.2em;
 }
 
-/* Hero Banner Styling */
+/* --- Hero Banner --- */
 .hero-banner {
-  background-image: none;
-  background-color: #1a1a2e; /* Tetap sedikit berbeda dari background utama */
-  position: relative;
-  overflow: hidden;
-  padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   height: 420px;
-  margin-bottom: 60px;
-  border-radius: 15px;
   margin: 40px 50px;
+  padding: 0;
+  background-color: #1a1a2e;
+  border-radius: 15px;
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
 }
 
 .hero-banner .carousel-images {
@@ -306,20 +384,21 @@ img {
 }
 
 .hero-banner .carousel-images img {
-  position: absolute; /* Tempatkan semua gambar di posisi yang sama */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0; /* Sembunyikan semua gambar secara default */
-  transition: opacity 0.8s ease-in-out; /* Tambahkan transisi untuk efek fade */
-  z-index: 1; /* Atur z-index dasar */
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 1;
 }
 
 .hero-banner .carousel-images img.active {
-  opacity: 1; /* Tampilkan gambar yang aktif */
-  z-index: 2; /* Pastikan gambar aktif berada di atas */
+  opacity: 1;
+  z-index: 2;
+  animation: ken-burns-zoom 10s ease-in-out forwards;
 }
 
 .hero-banner::before {
@@ -329,82 +408,56 @@ img {
   left: 0;
   right: 0;
   bottom: 0;
-  /* Gradien disesuaikan dengan warna gelap baru */
   background: linear-gradient(
     to right,
     rgba(18, 18, 22, 0.95) 0%,
-    /* Lebih gelap */ rgba(18, 18, 22, 0.2) 60%,
-    rgba(18, 18, 22, 0.95) 100% /* Lebih gelap */
+    rgba(18, 18, 22, 0.2) 60%,
+    rgba(18, 18, 22, 0.95) 100%
   );
   z-index: 3;
 }
 
 .hero-banner .banner-content {
-  max-width: 650px;
-  text-align: left;
   position: relative;
-  z-index: 4;
+  max-width: 650px;
   padding: 0 65px;
+  text-align: left;
+  z-index: 4;
 }
 
 .hero-banner .banner-content h2 {
-  font-size: 4.2em;
-  color: #ffffff; /* Lebih menonjol di tema gelap */
   margin-bottom: 20px;
-  text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  font-size: 4.2em;
+  font-weight: 700;
   line-height: 1.15;
   text-align: left;
+  text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.7);
 }
 
 .hero-banner .banner-content p {
-  font-size: 1.2em;
-  color: #b3b3b3; /* Teks lebih lembut */
-  line-height: 1.8;
   margin-bottom: 40px;
+  color: #b3b3b3;
+  font-size: 1.2em;
+  line-height: 1.8;
   text-align: left;
 }
 
 .hero-banner .banner-buttons .btn {
   padding: 15px 38px;
+  margin-right: 25px;
   border-radius: 28px;
   font-weight: 600;
-  margin-right: 25px;
   transition: background-color 0.2s ease, transform 0.1s ease,
     box-shadow 0.1s ease;
 }
 
-.hero-banner .banner-buttons .btn.primary {
-  background-color: #7f5af0; /* Ganti ke warna baru */
-  color: #ffffff; /* Teks di tombol terang */
-  box-shadow: 0 4px 10px rgba(127, 90, 240, 0.4); /* Sesuaikan shadow */
-}
-
-.hero-banner .banner-buttons .btn.primary:hover {
-  background-color: #6a49d7; /* Gelapkan sedikit untuk hover */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(127, 90, 240, 0.5); /* Sesuaikan shadow */
-}
-
-.hero-banner .banner-buttons .btn.secondary {
-  background-color: #282830; /* Lebih gelap dari #1a1a2e */
-  color: #ffffff; /* Teks putih */
-  border: 1px solid #b3b3b3; /* Border lebih lembut */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.hero-banner .banner-buttons .btn.secondary:hover {
-  background-color: #3a3a45; /* Background hover lebih gelap */
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-}
-
 .hero-banner .banner-controls {
-  position: relative;
-  z-index: 4;
   display: flex;
+  position: relative;
   gap: 15px;
   padding-right: 65px;
+  z-index: 4;
 }
 
 .hero-banner .banner-controls .dot {
@@ -418,188 +471,456 @@ img {
 
 .hero-banner .banner-controls .dot.active,
 .hero-banner .banner-controls .dot:hover {
-  background-color: #7f5af0; /* Ganti ke warna baru */
+  background-color: #7f5af0;
   transform: scale(1.4);
 }
 
-/* New Releases Section */
-.new-releases {
+/* --- Content Grids & Sections --- */
+.new-releases,
+.artists-section,
+.search-results-section,
+.recently-played-list,
+.playlists-list-section,
+.albums-list-section {
   padding: 0 45px;
   margin-bottom: 90px;
 }
 
-.new-releases .section-header {
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 40px;
+  animation: fade-in-up 0.6s ease-out forwards;
 }
 
-.new-releases .section-header h2 {
-  font-size: 2.4em;
-  color: #ffffff; /* Lebih menonjol */
-  text-align: left;
+.section-header h2 {
   margin-bottom: 0;
+  color: #ffffff;
+  font-size: 2.4em;
   font-weight: 600;
+  text-align: left;
 }
 
-.new-releases .section-header .see-all {
-  color: #7f5af0; /* Ganti ke warna baru */
+.section-header .see-all {
+  color: #7f5af0;
   font-weight: 500;
   font-size: 1em;
   padding-bottom: 5px;
 }
 
-.new-releases .section-header .see-all:hover {
-  color: #6a49d7; /* Gelapkan sedikit untuk hover */
+.section-header .see-all:hover {
+  color: #6a49d7;
   text-decoration: underline;
 }
 
-/* --- Penyesuaian untuk Tombol "Back to Home" di halaman All Songs dan Albums --- */
-/* Menggabungkan styling untuk kedua tombol back */
-.all-songs-list .section-header .back-button-all-songs,
-.albums-list-section .section-header .back-button-albums,
-.album-detail-section .section-header .back-button-albums,
-.playlists-list-section .section-header .back-button-playlists,
-.playlist-detail-section .section-header .back-button-playlists,
-.search-results-section .section-header .back-button-home,
-.recently-played-list .section-header .back-button-home, /* Recently Played back button */
-.artists-section .section-header .back-button-home, /* [NEW] Artists back button */
-.artist-detail-section .section-header .back-button-artists /* [NEW] Artist Detail back button */ {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 15px;
-  background-color: #282830; /* Background tombol lebih gelap */
-  border-radius: 20px;
-  color: #ffffff; /* Teks putih */
-  font-size: 0.9em;
-  font-weight: 600;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  text-decoration: none;
-}
-
-.all-songs-list .section-header .back-button-all-songs:hover,
-.albums-list-section .section-header .back-button-albums:hover,
-.album-detail-section .section-header .back-button-albums:hover,
-.playlists-list-section .section-header .back-button-playlists:hover,
-.playlist-detail-section .section-header .back-button-playlists:hover,
-.search-results-section .section-header .back-button-home:hover,
-.recently-played-list .section-header .back-button-home:hover, /* Recently Played back button hover */
-.artists-section .section-header .back-button-home:hover, /* [NEW] Artists back button hover */
-.artist-detail-section .section-header .back-button-artists:hover /* [NEW] Artist Detail back button hover */ {
-  background-color: #3a3a45; /* Background hover lebih gelap */
-  transform: translateY(-2px);
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.all-songs-list .section-header .back-button-all-songs i,
-.albums-list-section .section-header .back-button-albums i,
-.album-detail-section .section-header .back-button-albums i,
-.playlists-list-section .section-header .back-button-playlists i,
-.playlist-detail-section .section-header .back-button-playlists i,
-.search-results-section .section-header .back-button-home i,
-.recently-played-list .section-header .back-button-home i, /* Recently Played back button icon */
-.artists-section .section-header .back-button-home i, /* [NEW] Artists back button icon */
-.artist-detail-section .section-header .back-button-artists i /* [NEW] Artist Detail back button icon */ {
-  font-size: 1em;
-}
-
-.new-releases .section-header .see-all i {
+.section-header .see-all i {
   margin-left: 8px;
 }
 
-.release-grid {
+.release-grid,
+.artist-grid,
+.search-results-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 35px;
 }
 
-.release-item {
-  background-color: #121216; /* Tetap sedikit terang agar ada kedalaman */
+/* --- Item Cards (Release, Artist, Playlist) --- */
+.release-item,
+.artist-item,
+.playlist-item,
+.search-result-item {
+  position: relative;
+  padding-bottom: 18px;
+  background-color: #121216;
   border: 1px solid transparent;
   border-radius: 15px;
-  overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  cursor: pointer;
-  padding-bottom: 18px;
   text-align: center;
-  position: relative; /* Added for add-to-queue-btn positioning */
+  cursor: pointer;
+  overflow: hidden;
   transition: var(--transition-smooth);
 }
 
-.release-item:hover {
-  transform: translateY(-8px) scale(1.02); /* Efek mengangkat yang lebih terasa */
+.release-item:hover,
+.artist-item:hover,
+.playlist-item:hover,
+.search-result-item:hover {
+  transform: translateY(-8px) scale(1.02);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-  border-color: rgba(127, 90, 240, 0.6); /* Border warna aksen saat hover */
+  border-color: rgba(127, 90, 240, 0.6);
 }
 
-.release-item:hover .add-to-queue-btn {
-  box-shadow: var(--accent-glow);
-}
-
-.release-item .cover-art {
+.release-item .cover-art,
+.artist-item .cover-art,
+.playlist-item .cover-art,
+.search-result-item .cover-art {
   width: 100%;
   height: 210px;
   object-fit: cover;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Border lebih halus */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   transition: transform 0.3s ease-in-out;
 }
 
-.release-item:hover .cover-art {
-  transform: scale(1.05); /* Efek zoom saat hover */
+.release-item:hover .cover-art,
+.artist-item:hover .cover-art,
+.playlist-item:hover .cover-art,
+.search-result-item:hover .cover-art {
+  transform: scale(1.05);
 }
 
-.release-item .item-info {
+.release-item .item-info,
+.artist-item .item-info,
+.playlist-item .item-info,
+.search-result-item .item-info {
   padding: 18px;
   text-align: left;
 }
 
-.release-item .item-info a {
-  font-weight: 600; /* Ensured bolder for title */
-  color: #ffffff; /* Teks judul putih */
-  font-size: 1.1em;
-  margin-bottom: 6px;
+.release-item .item-info a,
+.artist-item .item-info a,
+.playlist-item .item-info a,
+.search-result-item .item-info a {
   display: block;
+  margin-bottom: 6px;
+  color: #ffffff;
+  font-size: 1.1em;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.release-item .item-info a:hover {
-  color: #7f5af0; /* Ganti ke warna baru */
+.release-item .item-info a:hover,
+.artist-item .item-info a:hover,
+.playlist-item .item-info a:hover,
+.search-result-item .item-info a:hover {
+  color: #7f5af0;
 }
 
-.release-item .item-info .artist {
-  color: #b3b3b3; /* Teks artis lebih lembut */
+.release-item .item-info .artist,
+.artist-item .item-info .song-count,
+.playlist-item .item-info .song-count,
+.search-result-item .item-info .artist {
+  color: #b3b3b3;
   font-size: 0.95em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Fixed Music Player Footer */
+.release-item .song-duration,
+.search-result-item .song-duration {
+  font-size: 0.8em;
+  color: #b0b0c0;
+  margin-top: 2px;
+}
+
+/* [FIX] Add to Queue Button on Cards */
+.release-item .add-to-queue-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: 45px;
+  height: 45px;
+  background-color: #7f5af0;
+  color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(127, 90, 240, 0.4);
+  font-size: 1.2em;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s ease-out;
+  z-index: 6;
+}
+
+.release-item:hover .add-to-queue-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* [FIX] Playlist Actions (Delete Button) */
+.playlist-item .playlist-actions {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.playlist-item:hover .playlist-actions {
+  opacity: 1;
+}
+
+.playlist-actions .delete-playlist-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: rgba(239, 83, 80, 0.8);
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.playlist-actions .delete-playlist-btn:hover {
+  background-color: #ef5350;
+  transform: scale(1.1) translateY(-2px);
+}
+
+/* ================================================================= */
+/* 4. Page-Specific Styles
+/* ================================================================= */
+
+/* --- All Songs Page --- */
+.all-songs-page {
+  padding-bottom: 50px;
+}
+
+.all-songs-header {
+  position: relative;
+  padding: 60px 45px;
+  display: flex;
+  align-items: flex-end;
+  min-height: 300px;
+  background-image: linear-gradient(
+      to top,
+      rgba(11, 11, 14, 1) 10%,
+      transparent 100%
+    ),
+    url("https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80");
+  background-size: cover;
+  background-position: center 30%;
+  margin-bottom: 40px;
+}
+
+.all-songs-header .header-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  width: 100%;
+}
+
+.all-songs-header .header-icon {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(127, 90, 240, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 4em;
+}
+
+.all-songs-header .header-text h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 4.5em;
+  font-weight: 800;
+  line-height: 1.1;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.all-songs-header .header-text p {
+  margin-top: 5px;
+  color: #e0e0e0;
+  font-size: 1.1em;
+}
+
+.all-songs-header .header-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 15px;
+  margin-left: auto;
+}
+
+.all-songs-header .header-actions .btn {
+  padding: 14px 28px;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.all-songs-container {
+  padding: 0 45px;
+}
+
+/* --- Detail Pages (Artist, Album, Playlist) --- */
+.artist-detail-section,
+.album-detail-section,
+.playlist-detail-section {
+  padding: 40px;
+}
+
+.artist-header,
+.album-header,
+.playlist-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+  padding: 30px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #211a30 50%, #1a1a2e 100%);
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.artist-header:hover,
+.album-header:hover,
+.playlist-header:hover {
+  transform: scale(1.01);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  background: radial-gradient(
+      circle at top left,
+      rgba(127, 90, 240, 0.1),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #1f1f2b, #15151e);
+}
+
+.artist-header img,
+.album-header img,
+.playlist-header img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.album-header img,
+.playlist-header img {
+  border-radius: 12px;
+}
+
+.artist-header img {
+  border-radius: 50%;
+  border: 3px solid #7f5af0;
+}
+
+.artist-header h1,
+.album-header h1,
+.playlist-header h1 {
+  margin: 5px 0;
+  font-size: 3em;
+  color: #ffffff;
+}
+
+.artist-bio {
+  margin-top: 15px;
+  max-width: 600px;
+  color: #b3b3b3;
+  font-size: 1em;
+  line-height: 1.6;
+}
+
+/* --- Player Page --- */
+.player-page-content {
+  width: 100%;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 50px;
+  background-color: #121216;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.player-page-content h1 {
+  margin-bottom: 15px;
+  color: #ffffff;
+  font-size: 3em;
+  font-weight: 700;
+}
+
+.player-page-content .artist-on-player {
+  margin-bottom: 30px;
+  color: #b3b3b3;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.player-page-content audio {
+  display: none;
+}
+
+.player-page-content h2 {
+  margin-top: 40px;
+  margin-bottom: 25px;
+  color: #ffffff;
+  font-size: 2em;
+}
+
+#playerVisualizerCanvas {
+  width: 100%;
+  height: 100px;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #211a30 50%, #1a1a2e 100%);
+  border: 1px solid #3a3a45;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.player-page-content .visualizer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.player-page-content .visualizer-controls label {
+  color: #e2e2e2;
+  font-weight: 500;
+}
+
+/* --- Search Results --- */
+.search-results-section {
+  padding: 40px;
+}
+
+/* ================================================================= */
+/* 5. Footer Music Player
+/* ================================================================= */
+
+/* --- Main Container & Layout --- */
 .music-player-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #181818; /* Background footer paling gelap */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: var(--footer-height);
   padding: 10px 45px;
-  box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.45);
+  background: rgba(28, 28, 32, 0.65);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
   z-index: 200;
-  height: var(--footer-height); /* Use CSS variable */
   flex-wrap: nowrap;
-  transition: height 0.3s ease, padding 0.3s ease; /* Smooth transition for height and padding */
+  transition: height 0.3s ease, padding 0.3s ease;
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
 }
 
+/* --- Player Info (Cover, Title) --- */
 .music-player-footer .player-info {
   display: flex;
   align-items: center;
@@ -610,97 +931,115 @@ img {
   transition: flex 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
 }
 
-.music-player-footer .player-info .player-cover {
+.music-player-footer .player-cover {
+  flex-shrink: 0;
   width: 65px;
   height: 65px;
-  border-radius: 8px;
-  object-fit: cover;
   margin-right: 18px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  flex-shrink: 0;
-  transition: width 0.3s ease, height 0.3s ease, margin-right 0.3s ease;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.4s ease;
 }
 
-.music-player-footer .player-info .player-text {
+.music-player-footer:hover .player-cover {
+  transform: scale(1.15) rotate(-4deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.music-player-footer.is-playing .player-cover {
+  box-shadow: 0 0 20px rgba(127, 90, 240, 0.6), 0 0 30px rgba(127, 90, 240, 0.4);
+}
+
+.music-player-footer .player-text {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   overflow: hidden;
   white-space: nowrap;
-  transition: opacity 0.3s ease; /* Smooth transition for text opacity */
+  transition: opacity 0.3s ease;
 }
 
-.music-player-footer .player-info .current-track-name {
-  font-weight: 600;
+.music-player-footer .current-track-name {
   color: #ffffff;
   font-size: 1.15em;
+  font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.3s ease;
 }
 
-.music-player-footer .player-info .current-artist {
+.music-player-footer:hover .current-track-name {
+  color: #a18af7;
+}
+
+.music-player-footer .current-artist {
   color: #b3b3b3;
   font-size: 0.95em;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Area baru untuk visualizer */
+/* --- Visualizer --- */
 .player-visualizer-area {
+  display: flex;
   flex-grow: 1;
   flex-shrink: 1;
+  align-items: center;
+  justify-content: center;
   min-width: 150px;
   max-width: 400px;
   height: 40px;
   margin: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #282830; /* Lebih gelap dari sebelumnya */
-  border-radius: 8px;
+  background: transparent;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
   overflow: hidden;
 }
 
 #visualizerCanvas {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   background-color: transparent;
 }
 
+/* --- Player Controls & Buttons --- */
 .music-player-footer .player-controls {
   display: flex;
-  gap: 25px;
-  align-items: center;
   flex: 0 0 auto;
-  width: 150px;
+  align-items: center;
   justify-content: center;
+  width: 150px;
+  gap: 25px;
   transition: width 0.3s ease, gap 0.3s ease;
 }
 
 .music-player-footer .player-controls button {
-  font-size: 1.6em;
   color: #b3b3b3;
+  font-size: 1.6em;
 }
 
 .music-player-footer .player-controls .play-pause-btn {
-  font-size: 2.4em;
-  background: linear-gradient(45deg, #7f5af0, #a18af7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, font-size 0.3s ease,
-    width 0.3s ease, height 0.3s ease;
-  border: none;
-  padding: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 50px;
   height: 50px;
+  padding: 0;
+  background: linear-gradient(45deg, #7f5af0, #a18af7);
+  border: none;
   border-radius: 50%;
   box-shadow: 0 4px 15px rgba(127, 90, 240, 0.5);
+  color: transparent;
+  font-size: 2.4em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, font-size 0.3s ease,
+    width 0.3s ease, height 0.3s ease;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .music-player-footer .player-controls .play-pause-btn:hover {
@@ -708,15 +1047,20 @@ img {
   box-shadow: 0 6px 20px rgba(127, 90, 240, 0.7);
 }
 
+.music-player-footer .player-controls .play-pause-btn.playing {
+  animation: pulse-glow 2.5s infinite ease-in-out;
+}
+
+/* --- Progress Bar --- */
 .music-player-footer .progress-bar {
   display: flex;
-  align-items: center;
   flex: 0 0 auto;
+  align-items: center;
   width: 250px;
   margin: 0 10px;
   position: relative;
   overflow: hidden;
-  opacity: 1; /* Ensure visible in full mode */
+  opacity: 1;
   visibility: visible;
   transition: opacity 0.3s ease, visibility 0.3s ease, width 0.3s ease,
     margin 0.3s ease, transform 0.3s ease;
@@ -724,96 +1068,78 @@ img {
 
 .music-player-footer .progress-bar .current-time,
 .music-player-footer .progress-bar .total-time {
-  font-size: 0.9em;
-  color: #b3b3b3;
-  min-width: 45px;
-  text-align: center;
   flex-shrink: 0;
+  min-width: 45px;
+  color: #b3b3b3;
+  font-size: 0.9em;
+  text-align: center;
   transition: font-size 0.3s ease, min-width 0.3s ease;
 }
 
-.music-player-footer .progress-bar .progress-track {
-  background-color: #535353;
-  height: 6px;
-  border-radius: 6px;
-  flex-grow: 1;
-  margin: 0 12px;
+.music-player-footer .progress-track {
   position: relative;
+  flex-grow: 1;
+  height: 6px;
+  margin: 0 12px;
+  background-color: #535353;
+  border-radius: 6px;
   cursor: pointer;
   z-index: 1;
 }
 
-.music-player-footer .progress-bar .progress-fill {
-  height: 100%;
-  background-color: #7f5af0;
-  border-radius: 6px;
+.music-player-footer .progress-fill {
   width: 0%;
+  height: 100%;
   background: linear-gradient(90deg, #7f5af0, #a18af7);
+  border-radius: 6px;
 }
 
+/* --- Volume Controls --- */
 .music-player-footer .volume-controls {
   display: flex;
-  align-items: center;
-  gap: 12px;
   flex: 0 0 auto;
-  width: 120px;
+  align-items: center;
   justify-content: flex-end;
   position: relative;
-  opacity: 1; /* Ensure visible in full mode */
+  width: 120px;
+  gap: 12px;
+  opacity: 1;
   visibility: visible;
   transition: opacity 0.3s ease, visibility 0.3s ease, width 0.3s ease,
     margin 0.3s ease, transform 0.3s ease;
 }
 
-/* Volume Percentage Display Styles */
-.volume-percentage-display {
-  position: absolute;
-  bottom: calc(100% + 5px);
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.75);
-  color: #ffffff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.8em;
-  font-weight: 500;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-  z-index: 201;
-}
-
 .music-player-footer .volume-controls button {
-  font-size: 1.3em;
   color: #b3b3b3;
+  font-size: 1.3em;
 }
 
-.music-player-footer .volume-controls .volume-slider {
+.music-player-footer .volume-slider {
   flex-grow: 1;
   max-width: 120px;
 }
 
 .music-player-footer .volume-controls .slider {
   width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
   height: 6px;
   background: #535353;
-  outline: none;
   border-radius: 6px;
+  outline: none;
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .music-player-footer .volume-controls .slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
   width: 18px;
   height: 18px;
+  margin-top: -6px;
   background: #ffffff;
   border-radius: 50%;
-  cursor: pointer;
-  margin-top: -6px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .music-player-footer .volume-controls .slider::-moz-range-thumb {
@@ -821,33 +1147,58 @@ img {
   height: 18px;
   background: #ffffff;
   border-radius: 50%;
-  cursor: pointer;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 
+/* --- Player Settings --- */
 .music-player-footer .player-settings {
   display: flex;
-  gap: 18px;
   flex: 0 0 auto;
   justify-content: flex-end;
+  gap: 18px;
   margin-left: 20px;
   transition: gap 0.3s ease, margin-left 0.3s ease;
 }
 
-.music-player-footer .player-settings button {
+.player-settings button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 50%;
   color: #b3b3b3;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: var(--transition-smooth);
+}
+
+.player-settings button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: translateY(-3px);
+}
+
+.player-settings button.active {
+  background-color: rgba(127, 90, 240, 0.15);
+  color: #7f5af0;
+}
+
+.player-settings button.active::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  width: 5px;
+  height: 5px;
+  background-color: #7f5af0;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #7f5af0;
 }
 
 .music-player-footer .player-settings #toggleMiniPlayerBtn {
   background-color: #282830;
   color: #e0e0e0;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 1em;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: background-color 0.2s ease, transform 0.1s ease, width 0.3s ease,
@@ -856,7 +1207,6 @@ img {
 
 .music-player-footer .player-settings #toggleMiniPlayerBtn:hover {
   background-color: #3a3a45;
-  transform: translateY(-2px);
 }
 
 .music-player-footer .player-settings #toggleMiniPlayerBtn i {
@@ -868,77 +1218,474 @@ img {
   transform: rotate(180deg);
 }
 
-/* Volume Percentage Display Styles */
-.volume-percentage-display {
-  position: absolute;
-  bottom: calc(100% + 5px);
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.75);
-  color: #ffffff;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.8em;
-  font-weight: 500;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-  z-index: 201;
-}
-
-/* --- Playback Speed Control Styles --- */
-.music-player-footer .player-settings .playback-speed-control {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.music-player-footer .playback-speed-control {
   width: 45px;
   height: 45px;
-  border-radius: 50%;
   background-color: #282830;
+  color: #b3b3b3;
   font-size: 0.85em;
   font-weight: 600;
-  color: #b3b3b3;
-  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.music-player-footer .player-settings .playback-speed-control:hover {
-  background-color: #3a3a45;
-  transform: translateY(-2px);
+/* --- Mini Player Mode --- */
+.music-player-footer.mini-mode .player-visualizer-area,
+.music-player-footer.mini-mode .progress-bar,
+.music-player-footer.mini-mode .volume-controls {
+  display: none;
 }
-.music-player-footer .player-settings .playback-speed-control.active {
+
+/* ================================================================= */
+/* 6. Sidepanels
+/* ================================================================= */
+
+/* --- General Sidepanel Styles --- */
+.sidepanel,
+.lyrics-sidepanel,
+.queue-sidepanel {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background-color: #121216;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.45);
+  z-index: 250;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.sidepanel.open,
+.lyrics-sidepanel.open,
+.queue-sidepanel.open {
+  transform: translateX(0);
+}
+
+.sidepanel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidepanel-header h3 {
+  margin: 0;
   color: #7f5af0;
-  box-shadow: 0 0 8px rgba(127, 90, 240, 0.3);
+  font-size: 1.5em;
+  font-weight: 600;
 }
 
-/* Toast Message Styles */
+.sidepanel-header .close-btn {
+  position: relative;
+  color: #b3b3b3;
+  font-size: 1.5em;
+  z-index: 10;
+}
+
+.sidepanel-header .close-btn:hover {
+  color: #ffffff;
+}
+
+.sidepanel-content {
+  flex-grow: 1;
+  padding: 25px;
+  overflow-y: auto;
+}
+
+/* --- Queue Sidepanel --- */
+.queue-sidepanel.open .queue-item {
+  animation: queue-item-enter 0.5s ease-out forwards;
+}
+
+.queue-sidepanel.open .queue-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.queue-sidepanel.open .queue-item:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.queue-sidepanel.open .queue-item:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.queue-sidepanel.open .queue-item:nth-child(4) {
+  animation-delay: 0.25s;
+}
+.queue-sidepanel.open .queue-item:nth-child(5) {
+  animation-delay: 0.3s;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: grab;
+  transition: background-color 0.2s ease;
+}
+
+.queue-item:hover {
+  background-color: #2c2c44;
+}
+
+.queue-item.dragging {
+  opacity: 0.8;
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.queue-item .item-info {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  overflow: hidden;
+}
+
+.queue-item-index {
+  flex-shrink: 0;
+  width: 25px;
+  color: #b3b3b3;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.queue-cover-art {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 15px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.queue-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.queue-title {
+  color: #ffffff;
+  font-size: 1em;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.queue-artist {
+  color: #b3b3b3;
+  font-size: 0.85em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.queue-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  margin-left: 15px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.queue-item:hover .queue-actions {
+  opacity: 1;
+}
+
+.queue-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: #282830;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  color: #b3b3b3;
+  font-size: 0.8em;
+}
+
+.queue-actions button:hover {
+  background-color: #3a3a45;
+  color: #ffffff;
+}
+
+.queue-actions .play-queue-item-btn {
+  color: #7f5af0;
+}
+.queue-actions .play-queue-item-btn:hover {
+  background-color: #7f5af0;
+  color: #ffffff;
+}
+
+.queue-actions .remove-queue-item-btn {
+  color: #b3b3b3;
+}
+.queue-actions .remove-queue-item-btn:hover {
+  background-color: #535353;
+  color: #ffffff;
+}
+
+/* --- Lyrics Sidepanel --- */
+.lyrics-sidepanel .sidepanel-content {
+  color: #b3b3b3;
+  font-size: 1.05em;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.lyrics-sidepanel .no-lyrics-message {
+  margin-top: 20px;
+  color: #b3b3b3;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ================================================================= */
+/* 7. UI Feedback & Utilities
+/* ================================================================= */
+
+/* --- Toast Messages --- */
 #toastContainer {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
   gap: 10px;
+  z-index: 1000;
   pointer-events: none;
 }
 
 .toast-message {
+  padding: 14px 25px;
   background-color: #282830;
   color: #e0e0e0;
-  padding: 14px 25px;
   border-radius: 10px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transform: translateY(-20px);
-  animation: slideIn 0.3s forwards, fadeOut 0.5s forwards;
-  animation-delay: 0s, 2.5s;
-  animation-fill-mode: forwards;
-  pointer-events: auto;
   font-size: 0.95em;
   font-weight: 500;
   text-align: center;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideIn 0.3s forwards, fadeOut 0.5s forwards 2.5s;
 }
 
+/* --- Skeleton Loading Placeholders --- */
+.skeleton {
+  position: relative;
+  background-color: #282830;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #282830 8%, #3a3a45 18%, #282830 33%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+.skeleton-card {
+  width: 100%;
+  height: 280px;
+  margin-bottom: 32px;
+}
+
+.skeleton-list-item {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+/* --- Custom Tooltips --- */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  padding: 6px 12px;
+  background-color: #7f5af0;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.85em;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) scale(0.8);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* --- Empty State Messages --- */
+.empty-state-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  margin-top: 30px;
+  background-color: rgba(40, 40, 48, 0.3);
+  border: 1px dashed #3a3a45;
+  border-radius: 12px;
+  color: #b3b3b3;
+  text-align: center;
+}
+
+.empty-state-message::before {
+  content: "\f001";
+  margin-bottom: 20px;
+  color: #7f5af0;
+  font-family: "Font Awesome 6 Free";
+  font-size: 2.5em;
+  font-weight: 900;
+  opacity: 0.5;
+}
+
+/* --- Buttons & Forms --- */
+.btn.primary {
+  padding: 12px 25px;
+  background-color: #7f5af0;
+  border-radius: 25px;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(127, 90, 240, 0.2);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn.primary:hover {
+  background-color: #6a49d7;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(127, 90, 240, 0.3);
+}
+
+.btn.primary:active {
+  transform: scale(0.97) translateY(1px);
+  box-shadow: 0 2px 8px rgba(127, 90, 240, 0.3);
+}
+
+.btn.secondary {
+  background-color: #535353;
+  color: #ffffff;
+}
+.btn.secondary:hover {
+  background-color: #6a6a6a;
+}
+
+.text-input {
+  flex-grow: 1;
+  padding: 12px 20px;
+  background-color: #282830;
+  border: 1px solid #3a3a45;
+  border-radius: 25px;
+  color: #e0e0e0;
+  font-size: 1em;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.text-input::placeholder {
+  color: #909090;
+}
+
+.text-input:focus {
+  border-color: #7f5af0;
+  box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.3);
+}
+
+.text-input:focus::placeholder {
+  color: transparent;
+  transition: color 0.3s ease;
+}
+
+.create-playlist-form,
+.add-song-to-playlist-form {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.back-button-home,
+.back-button-albums,
+.back-button-artists {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background-color: #282830;
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 0.9em;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.back-button-home:hover,
+.back-button-albums:hover,
+.back-button-artists:hover {
+  background-color: #3a3a45;
+  color: #ffffff;
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.back-button-home i,
+.back-button-albums i,
+.back-button-artists i {
+  font-size: 1em;
+}
+
+.show-lyrics-btn,
+.player-page-content .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding: 10px 20px;
+  background-color: #282830;
+  border: 1px solid transparent;
+  border-radius: 25px;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.show-lyrics-btn:hover,
+.player-page-content .back-link:hover {
+  background-color: #3a3a45;
+  border-color: #7f5af0;
+  transform: translateY(-2px);
+}
+
+/* ================================================================= */
+/* 8. Animations & Effects
+/* ================================================================= */
+
+/* --- Keyframe Animations --- */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -961,990 +1708,145 @@ img {
   }
 }
 
-/* Player Page Content (player.html specific) */
-.player-page-content {
-  background-color: #121216;
-  padding: 50px;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-  width: 100%;
-  max-width: 800px;
-  box-sizing: border-box;
-  margin: 40px auto;
-  text-align: center;
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.5);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(127, 90, 240, 0.8), var(--accent-glow);
+  }
+  100% {
+    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.5);
+  }
 }
 
-.player-page-content h1 {
-  font-size: 3em;
-  margin-bottom: 15px;
-  color: #ffffff;
-  font-weight: 700;
+@keyframes logo-pulse-glow {
+  0% {
+    filter: drop-shadow(0 0 4px rgba(161, 138, 247, 0.6));
+    text-shadow: 0 0 4px rgba(161, 138, 247, 0.6),
+      0 0 8px rgba(127, 90, 240, 0.4);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(161, 138, 247, 0.9));
+    text-shadow: 0 0 12px rgba(161, 138, 247, 0.9),
+      0 0 20px rgba(127, 90, 240, 0.6);
+  }
+  100% {
+    filter: drop-shadow(0 0 4px rgba(161, 138, 247, 0.6));
+    text-shadow: 0 0 4px rgba(161, 138, 247, 0.6),
+      0 0 8px rgba(127, 90, 240, 0.4);
+  }
 }
 
-.player-page-content .artist-on-player {
-  font-size: 1.2em;
-  color: #b3b3b3;
-  margin-bottom: 30px;
-  font-weight: 500;
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Menyembunyikan kontrol audio bawaan di player_content.html */
-.player-page-content audio {
-  display: none;
+@keyframes equalize {
+  0% {
+    height: 4px;
+  }
+  20% {
+    height: 20px;
+  }
+  40% {
+    height: 8px;
+  }
+  60% {
+    height: 16px;
+  }
+  80% {
+    height: 6px;
+  }
+  100% {
+    height: 4px;
+  }
 }
 
-.player-page-content h2 {
-  font-size: 2em;
-  margin-top: 40px;
-  margin-bottom: 25px;
-  color: #ffffff;
+@keyframes ken-burns-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.15);
+  }
 }
 
-/* Styling untuk canvas di halaman player.html */
-#playerVisualizerCanvas {
-  width: 100%;
-  height: 100px;
-  background-color: #1a1a2e;
-  border-radius: 8px;
-  margin-top: 20px;
-  border: 1px solid #3a3a45;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(135deg, #1a1a2e 0%, #211a30 50%, #1a1a2e 100%);
+@keyframes queue-item-enter {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* [NEW] Styles for visualizer controls dropdown */
-.player-page-content .visualizer-controls {
-  /* Style added inline in HTML for quick setup, moved here for better practice */
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
 }
 
-.player-page-content .visualizer-controls label {
-  color: #e2e2e2;
-  font-weight: 500;
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.player-page-content .visualizer-controls .text-input {
-  padding: 8px 12px;
-  border-radius: 20px;
-  background-color: #282830;
-  color: #e2e2e2;
-  border: 1px solid #3a3a45;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  -webkit-appearance: none; /* Remove default dropdown arrow */
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http://www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b3b3b3%22%20d%3D%22M287%2C118.7L159.9%2C245.9c-2.2%2C2.2-4.8%2C3.3-7.5%2C3.3s-5.3-1.1-7.5-3.3L5.3%2C118.7C1.8%2C115.2%2C0%2C110.6%2C0%2C105.7c0-4.8%2C1.8-9.4%2C5.3-12.9l22.7-22.7c3.5-3.5%2C8.1-5.3%2C12.9-5.3c4.8%2C0%2C9.4%2C1.8%2C12.9%2C5.3l108%2C108l108-108c3.5-3.5%2C8.1-5.3%2C12.9-5.3c4.8%2C0%2C9.4%2C1.8%2C12.9%2C5.3l22.7%2C22.7c3.5%2C3.5%2C5.3%2C8.1%2C5.3%2C12.9C292.4%2C110.6%2C290.6%2C115.2%2C287%2C118.7z%22/%3E%3C/svg%3E"); /* Custom dropdown arrow */
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px;
-  padding-right: 30px; /* Space for the custom arrow */
+/* --- Hover & Transition Effects --- */
+.sidebar .logo:hover img,
+.sidebar .logo:hover span {
+  transform: scale(1.05);
+  animation-play-state: paused;
+  filter: drop-shadow(0 0 14px rgba(161, 138, 247, 1));
+  text-shadow: 0 0 14px rgba(161, 138, 247, 1), 0 0 22px rgba(127, 90, 240, 0.7);
 }
 
-.player-page-content .visualizer-controls .text-input:focus {
-  border-color: #7f5af0;
-  box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.3);
+.sidebar .main-nav a:hover {
+  transform: translateX(5px);
+  border-left-color: #a18af7;
 }
 
-/* Tombol "Show Lyrics" */
-.show-lyrics-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  margin-top: 30px;
-  background-color: #282830;
-  border-radius: 25px;
-  color: #ffffff;
-  font-weight: 600;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  border: 1px solid transparent;
+.progress-track:hover .progress-fill::after {
+  transform: translate(50%, -50%) scale(1);
 }
 
-.show-lyrics-btn:hover {
-  background-color: #3a3a45;
-  transform: translateY(-2px);
-  border-color: #7f5af0;
-}
-
-/* Tombol "Back to Home" di player_content.html */
-.player-page-content .back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 30px;
-  padding: 10px 20px;
-  background-color: #282830;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 25px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  font-weight: 600;
-  font-size: 0.9em;
-  border: 1px solid transparent;
-}
-
-.player-page-content .back-link:hover {
-  background-color: #3a3a45;
-  transform: translateY(-2px);
-  border-color: #7f5af0;
-}
-
-.player-page-content .back-link i {
-  margin-right: 0;
-}
-
-/* Lyrics Sidepanel Styles */
-.lyrics-sidepanel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 400px;
-  height: 100%;
-  background-color: #121216;
-  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.45);
-  z-index: 250;
-  transform: translateX(100%);
-  transition: transform 0.3s ease-out;
-  display: flex;
-  flex-direction: column;
-}
-
-.lyrics-sidepanel.open {
-  transform: translateX(0);
-}
-
-.lyrics-sidepanel .sidepanel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 25px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.lyrics-sidepanel .sidepanel-header h3 {
-  font-size: 1.5em;
-  color: #7f5af0;
-  margin: 0;
-  font-weight: 600;
-}
-
-.lyrics-sidepanel .sidepanel-header .close-btn {
-  font-size: 1.5em;
-  color: #b3b3b3;
-}
-
-.lyrics-sidepanel .close-btn:hover {
-  color: #ffffff;
-}
-
-.lyrics-sidepanel .sidepanel-content {
-  flex-grow: 1;
-  padding: 25px;
-  overflow-y: auto;
-  line-height: 1.8;
-  font-size: 1.05em;
-  color: #b3b3b3;
-  white-space: pre-wrap;
-}
-
-.lyrics-sidepanel .sidepanel-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.lyrics-sidepanel .sidepanel-content::-webkit-scrollbar-track {
-  background: #282830;
-  border-radius: 10px;
-}
-
-.lyrics-sidepanel .sidepanel-content::-webkit-scrollbar-thumb {
-  background: #3a3a45;
-  border-radius: 10px;
-}
-
-.lyrics-sidepanel .sidepanel-content::-webkit-scrollbar-thumb:hover {
-  background: #535353;
-}
-
-.lyrics-sidepanel .no-lyrics-message {
-  text-align: center;
-  font-style: italic;
-  color: #b3b3b3;
-  margin-top: 20px;
-}
-
-/* NEW: Playlist specific styles */
-.playlists-list-section {
-  padding: 40px;
-}
-
-.playlists-list-section .section-header h2 {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.create-playlist-form {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 40px;
-  align-items: center;
-}
-
-.create-playlist-form .text-input {
-  flex-grow: 1;
-  padding: 12px 20px;
-  border: 1px solid #3a3a45;
-  border-radius: 25px;
-  background-color: #282830;
-  color: #e0e0e0;
-  font-size: 1em;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.create-playlist-form .text-input::placeholder {
-  color: #909090;
-}
-
-.create-playlist-form .text-input:focus {
-  border-color: #7f5af0;
-  box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.3);
-}
-
-.btn.primary {
-  /* Re-applying primary button styles for consistency */
-  background-color: #7f5af0;
-  color: #ffffff;
-  padding: 12px 25px;
-  border-radius: 25px;
-  font-weight: 600;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  box-shadow: 0 4px 10px rgba(127, 90, 240, 0.2);
-}
-
-.btn.primary:hover {
-  background-color: #6a49d7;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(127, 90, 240, 0.3);
-}
-
-.playlist-item {
+.progress-track:hover .progress-fill {
+  height: 8px;
+  top: -1px;
   position: relative;
 }
 
-.playlist-item .cover-art {
-  background-color: #282830;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3em;
-  color: #b3b3b3;
+.volume-controls .slider:hover::-webkit-slider-thumb {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-/* Style for playlist actions (delete button) */
-.playlist-item .playlist-actions {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  z-index: 5;
+.volume-controls .slider:hover::-moz-range-thumb {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-.playlist-item:hover .playlist-actions {
-  opacity: 1;
-}
-
-.playlist-item .playlist-actions .delete-playlist-btn {
-  background-color: rgba(255, 0, 0, 0.7);
-  color: #ffffff;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.9em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.playlist-item .playlist-actions .delete-playlist-btn:hover {
-  background-color: rgba(255, 0, 0, 0.9);
-  transform: scale(1.1);
-}
-
-/* Playlist Detail Page Styles */
-.playlist-detail-section {
-  padding: 40px;
-  background-color: #0b0b0e;
-}
-
-.playlist-detail-section .playlist-header h1 {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.playlist-detail-section .playlist-header #playlistNameDisplay {
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.playlist-detail-section .playlist-header .edit-btn {
-  background-color: #282830;
-  color: #b3b3b3;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8em;
-  transition: background-color 0.2s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.playlist-detail-section .playlist-header .edit-btn:hover {
-  background-color: #3a3a45;
-  color: #ffffff;
-}
-
-.playlist-detail-section .playlist-header #playlistNameEditInput {
-  padding: 8px 15px;
-  border: 1px solid #3a3a45;
-  border-radius: 20px;
-  background-color: #282830;
-  color: #e0e0e0;
-  font-size: 1em;
-  outline: none;
-  width: 300px;
-}
-
-.playlist-detail-section .playlist-header .small-btn {
-  padding: 8px 15px;
-  font-size: 0.8em;
-  border-radius: 20px;
-  margin-left: 5px;
-}
-
-.playlist-detail-section .playlist-header .btn.secondary {
-  background-color: #535353;
-  color: #ffffff;
-}
-.playlist-detail-section .playlist-header .btn.secondary:hover {
-  background-color: #6a6a6a;
-}
-
-.add-song-to-playlist-form {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 40px;
-  align-items: center;
-}
-
-.add-song-to-playlist-form .text-input {
-  flex-grow: 1;
-  padding: 12px 20px;
-  border: 1px solid #3a3a45;
-  border-radius: 25px;
-  background-color: #282830;
-  color: #e0e0e0;
-  font-size: 1em;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.add-song-to-playlist-form .text-input::placeholder {
-  color: #909090;
-}
-
-.add-song-to-playlist-form .text-input:focus {
-  border-color: #7f5af0;
-  box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.3);
-}
-
-.playlist-song-list-detail .playlist-song-list-item {
-  position: relative;
-  background-color: #1a1a2e;
-}
-.playlist-song-list-detail .playlist-song-list-item:hover {
-  background-color: #2c2c44 !important;
-}
-
-.playlist-song-list-item .remove-song-from-playlist-btn {
-  background-color: rgba(255, 0, 0, 0.7);
-  color: #ffffff;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8em;
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.playlist-song-list-item:hover .remove-song-from-playlist-btn {
-  opacity: 1;
-}
-
-.playlist-song-list-item .remove-song-from-playlist-btn:hover {
-  background-color: rgba(255, 0, 0, 0.9);
-}
-
-/* Styles for Search Results Page */
-.search-results-section {
-  padding: 40px;
-}
-
-.search-results-section .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 40px;
-}
-
-.search-results-section .section-header h2 {
-  font-size: 2.4em;
-  color: #ffffff;
-  text-align: left;
-  margin-bottom: 0;
-  font-weight: 600;
-}
-
-.search-results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 35px;
-}
-
-.search-result-item {
-  background-color: #121216;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  padding-bottom: 18px;
-  text-align: center;
-  position: relative;
-}
-
-.search-result-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-}
-
-.search-result-item .cover-art {
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-}
-
-.search-result-item .item-info {
-  padding: 18px;
-  text-align: left;
-}
-
-.search-result-item .item-info a {
-  font-weight: 600;
-  color: #ffffff;
-  font-size: 1.1em;
-  margin-bottom: 6px;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.search-result-item .item-info a:hover {
-  color: #7f5af0;
-}
-
-.search-result-item .item-info .artist {
-  color: #b3b3b3;
-  font-size: 0.95em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.search-result-item .song-duration {
-  font-size: 0.8em;
-  color: #b0b0c0;
-  margin-top: 2px;
-}
-
-/* Styles for Add to Queue Button */
-.add-to-queue-btn {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background-color: #7f5af0;
-  color: #ffffff;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2em;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(127, 90, 240, 0.4);
-  z-index: 6;
-}
-
-/* Show on hover for release-item and search-result-item */
-.release-item:hover .add-to-queue-btn,
-.search-result-item:hover .add-to-queue-btn {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Ensure it's always visible for song-list-item (like in album/playlist detail) if desired, or position differently */
-.song-list-item .add-to-queue-btn,
-.playlist-song-list-item .add-to-queue-btn {
-  position: static;
-  margin-left: auto;
-  opacity: 1;
-  transform: translateY(0);
-  width: 35px;
-  height: 35px;
-  font-size: 1em;
-  background-color: #282830;
-  box-shadow: none;
-}
-
-.song-list-item .add-to-queue-btn:hover,
-.playlist-song-list-item .add-to-queue-btn:hover {
-  background-color: #3a3a45;
-}
-
-/* Styles for Queue Sidepanel */
-.queue-sidepanel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 400px;
-  height: 100%;
-  background-color: #121216;
-  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.45);
-  z-index: 250;
-  transform: translateX(100%);
-  transition: transform 0.3s ease-out;
-  display: flex;
-  flex-direction: column;
-}
-
-.queue-sidepanel.open {
-  transform: translateX(0);
-}
-
-.queue-sidepanel .sidepanel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 25px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.queue-sidepanel .sidepanel-header h3 {
-  font-size: 1.5em;
-  color: #7f5af0;
-  margin: 0;
-  font-weight: 600;
-}
-
-.queue-sidepanel .sidepanel-header .close-btn {
-  font-size: 1.5em;
-  color: #b3b3b3;
-  /* FIX: Menambahkan z-index agar tombol bisa diklik */
-  position: relative;
-  z-index: 10;
-}
-
-.queue-sidepanel .close-btn:hover {
-  color: #ffffff;
-}
-
-.queue-sidepanel .sidepanel-content {
-  flex-grow: 1;
-  padding: 25px;
-  overflow-y: auto;
-}
-
-.queue-sidepanel .sidepanel-content::-webkit-scrollbar {
-  width: 8px;
-}
-
-.queue-sidepanel .sidepanel-content::-webkit-scrollbar-track {
-  background: #282830;
-  border-radius: 10px;
-}
-
-.queue-sidepanel .sidepanel-content::-webkit-scrollbar-thumb {
-  background: #3a3a45;
-  border-radius: 10px;
-}
-
-.queue-sidepanel .sidepanel-content::-webkit-scrollbar-thumb:hover {
-  background: #535353;
-}
-
-/* Styles for individual queue items */
-.queue-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
-  margin-bottom: 8px;
-  background-color: #1a1a2e;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-  cursor: grab;
-  position: relative;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.queue-item:hover {
-  background-color: #2c2c44;
-}
-
-.queue-item.dragging {
-  opacity: 0.8;
-  transform: scale(1.02);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.queue-item .item-info {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  overflow: hidden;
-}
-
-.queue-item-index {
-  width: 25px;
-  text-align: center;
-  color: #b3b3b3;
-  font-size: 0.9em;
-  flex-shrink: 0;
-}
-
-.queue-cover-art {
-  width: 50px;
-  height: 50px;
-  border-radius: 6px;
-  object-fit: cover;
-  margin-left: 10px;
-  margin-right: 15px;
-  flex-shrink: 0;
-}
-
-.queue-text {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.queue-title {
-  font-weight: 600;
-  color: #ffffff;
-  font-size: 1em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.queue-artist {
-  color: #b3b3b3;
-  font-size: 0.85em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.queue-actions {
-  display: flex;
-  gap: 8px;
-  margin-left: 15px;
-  flex-shrink: 0;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.queue-item:hover .queue-actions {
-  opacity: 1;
-}
-
-.queue-actions button {
-  background-color: #282830;
-  color: #b3b3b3;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 0.8em;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-}
-
-.queue-actions button:hover {
-  background-color: #3a3a45;
-  color: #ffffff;
-}
-
-.queue-actions .play-queue-item-btn {
-  color: #7f5af0;
-}
-.queue-actions .play-queue-item-btn:hover {
-  background-color: #7f5af0;
-  color: #ffffff;
-}
-
-.queue-actions .remove-queue-item-btn {
-  color: #b3b3b3;
-}
-.queue-actions .remove-queue-item-btn:hover {
-  color: #ffffff;
-  background-color: #535353;
-}
-
-/* Recently Played Section Styles */
-.recently-played-list {
-  padding: 40px;
-}
-
-.recently-played-list .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 40px;
-}
-
-.recently-played-list .section-header h2 {
-  font-size: 2.4em;
-  color: #ffffff;
-  text-align: left;
-  margin-bottom: 0;
-  font-weight: 600;
-}
-
-.song-list-detail {
-  display: flex;
-  flex-direction: column;
-}
-
-.song-list-item {
-  display: flex;
-  align-items: center;
-  padding: 15px;
-  margin-bottom: 10px;
-  background-color: #1a1a2e;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-}
-
-.song-list-item:hover {
-  background-color: #2c2c44;
-}
-
-.song-list-item span:first-child {
-  width: 30px;
-  text-align: center;
-  color: #b0b0c0;
-  font-size: 0.9em;
-}
-
-.song-list-item div:nth-child(2) {
-  flex-grow: 1;
-  margin-left: 15px;
-}
-
-.song-list-item .play-link {
-  font-weight: 600;
-  color: #e2e2e2;
-  display: block;
-  font-size: 1em;
-}
-
-.song-list-item .play-link:hover {
-  color: #7f5af0;
-}
-
-.song-list-item p {
-  font-size: 0.85em;
-  color: #b8b8c8;
-}
-
-.song-list-item span:last-child {
-  color: #b0b0c0;
-  font-size: 0.85em;
-  margin-right: 15px;
-}
-
-/* [NEW] Artists Page Styles (Similar to Albums or New Releases) */
-.artists-section {
-  padding: 40px;
-}
-
-.artists-section .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 40px;
-}
-
-.artists-section .section-header h2 {
-  font-size: 2.4em;
-  color: #ffffff;
-  text-align: left;
-  margin-bottom: 0;
-  font-weight: 600;
-}
-
-.artist-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 35px;
-}
-
-.artist-item {
-  background-color: #121216;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  padding-bottom: 18px;
-  text-align: center;
-  position: relative;
-}
-
-.artist-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-}
-
-.artist-item .cover-art {
-  width: 100%;
-  height: 210px;
-  object-fit: cover;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-}
-
-.artist-item .item-info {
-  padding: 18px;
-  text-align: left;
-}
-
-.artist-item .item-info a.artist-link {
-  font-weight: 600;
-  color: #ffffff;
-  font-size: 1.1em;
-  margin-bottom: 6px;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.artist-item .item-info a.artist-link:hover {
-  color: #7f5af0;
-}
-
-.artist-item .item-info .song-count {
-  color: #b3b3b3;
-  font-size: 0.95em;
-}
-
-/* [NEW] Artist Detail Page Styles */
-.artist-detail-section {
-  padding: 40px;
-  background-color: #0b0b0e;
-}
-
-.artist-detail-section .artist-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-  gap: 30px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #211a30 50%, #1a1a2e 100%);
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.artist-detail-section .artist-header img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 50%; /* Make artist cover round */
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  border: 3px solid #7f5af0; /* Add a subtle border */
-}
-
-.artist-detail-section .artist-header h1 {
-  font-size: 3em;
-  color: #ffffff;
-  margin: 5px 0;
-}
-
-.artist-detail-section .artist-header p.artist-bio {
-  font-size: 1em;
-  color: #b3b3b3;
-  line-height: 1.6;
-  margin-top: 15px;
-  max-width: 600px;
-}
-
-.artist-detail-section .artist-header p.song-count {
-  font-size: 1.2em;
-  color: #e2e2e2;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
-.artist-detail-section .section-header {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.artist-detail-section .section-header h2 {
-  font-size: 1.8em;
-  color: #e2e2e2;
-}
-
-.artist-song-list-detail .song-list-item {
-  background-color: #1a1a2e;
-}
-
-.artist-song-list-detail .song-list-item:hover {
-  background-color: #2c2c44 !important;
-}
+/* ================================================================= */
+/* 9. Responsive Design (Media Queries)
+/* ================================================================= */
 
-/* Responsiveness (Media Queries) */
 @media (max-width: 1200px) {
-  /* Adjusted for player-info to prevent overlap on smaller screens */
   .music-player-footer .player-info {
     max-width: 200px;
   }
@@ -1954,132 +1856,90 @@ img {
 
   .playlist-detail-section .playlist-header,
   .artist-detail-section .artist-header {
-    /* [MODIFIED] Added artist-header */
     flex-direction: column;
     text-align: center;
     gap: 15px;
   }
+
   .playlist-detail-section .playlist-header img,
   .artist-detail-section .artist-header img {
-    /* [MODIFIED] Added artist-header */
     width: 150px;
     height: 150px;
-    border-radius: 12px; /* For playlist */
   }
+
   .artist-detail-section .artist-header img {
-    /* Override for artist to be round */
     border-radius: 50%;
   }
 
   .playlist-detail-section .playlist-header h1,
   .artist-detail-section .artist-header h1 {
-    /* [MODIFIED] Added artist-header */
     font-size: 2.5em;
     justify-content: center;
   }
-  .playlist-detail-section .playlist-header #playlistNameEditInput {
-    width: calc(100% - 60px);
-    max-width: 300px;
-  }
-  .add-song-to-playlist-form,
-  .create-playlist-form {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .add-song-to-playlist-form .text-input,
-  .create-playlist-form .text-input {
-    width: 100%;
-  }
-  .playlist-song-list-item .remove-song-from-playlist-btn {
-    right: 10px;
-  }
-  /* Search Results Responsiveness */
-  .search-results-section {
-    padding: 30px;
-  }
-  .search-results-section .section-header h2 {
-    font-size: 2em;
-  }
+
+  .release-grid,
+  .artist-grid,
   .search-results-grid {
     gap: 25px;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
+
+  .release-item .cover-art,
+  .artist-item .cover-art,
   .search-result-item .cover-art {
     height: 180px;
   }
-  /* Queue Sidepanel Responsiveness */
+
   .queue-sidepanel {
     width: 350px;
-  }
-  /* Fullscreen button size in footer */
-  .music-player-footer .player-settings #fullscreenBtn,
-  .music-player-footer .player-settings #likeBtn {
-    width: 40px;
-    height: 40px;
-    font-size: 1.1em;
-  }
-  /* Recently Played */
-  .recently-played-list .section-header h2 {
-    font-size: 2em;
-  }
-  /* [NEW] Artists and Artist Detail Responsiveness */
-  .artists-section {
-    padding: 30px;
-  }
-  .artists-section .section-header h2 {
-    font-size: 2em;
-  }
-  .artist-grid {
-    gap: 25px;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-  .artist-item .cover-art {
-    height: 180px;
-  }
-  .artist-detail-section .section-header h2 {
-    font-size: 2em;
   }
 }
 
 @media (max-width: 992px) {
-  /* Adjusted for player-info to prevent overlap on smaller screens */
+  :root {
+    --content-padding-bottom: 250px;
+  }
+
   .music-player-footer {
-    flex-wrap: wrap; /* Allow wrapping */
-    height: auto; /* Auto height to accommodate wrapping */
+    flex-wrap: wrap;
+    height: auto;
     padding: 10px 20px;
-    justify-content: center; /* Center items when wrapping */
+    justify-content: center;
   }
 
   .music-player-footer .player-info {
-    flex: 1 1 100%; /* Take full width */
-    max-width: none; /* No max width */
+    flex: 1 1 100%;
+    max-width: none;
     justify-content: center;
-    margin-bottom: 10px; /* Space between info and controls */
+    margin-bottom: 10px;
   }
+
   .music-player-footer .player-cover {
     width: 50px;
     height: 50px;
     margin-right: 15px;
   }
+
   .music-player-footer .player-text {
     text-align: center;
   }
 
   .music-player-footer .player-visualizer-area {
-    order: 4; /* Move visualizer below controls */
-    flex: 1 1 100%; /* Take full width */
+    order: 4;
+    flex: 1 1 100%;
     max-width: none;
-    height: 30px; /* Smaller height */
-    margin: 10px 0; /* Adjust margin */
+    height: 30px;
+    margin: 10px 0;
   }
 
   .music-player-footer .player-controls {
-    order: 2; /* Order controls below info */
-    flex: 1 1 100%; /* Take full width */
+    order: 2;
+    flex: 1 1 100%;
     width: auto;
     justify-content: center;
     gap: 20px;
   }
+
   .music-player-footer .player-controls .play-pause-btn {
     font-size: 2em;
     width: 45px;
@@ -2087,150 +1947,79 @@ img {
   }
 
   .music-player-footer .progress-bar {
-    order: 1; /* Move progress bar above controls (or adjust as needed) */
-    flex: 1 1 100%; /* Take full width */
+    order: 1;
+    flex: 1 1 100%;
     width: auto;
-    margin: 10px 0; /* Add margin */
+    margin: 10px 0;
   }
+
   .music-player-footer .progress-bar .current-time,
   .music-player-footer .progress-bar .total-time {
     font-size: 0.8em;
   }
 
   .music-player-footer .volume-controls {
-    order: 3; /* Order volume controls */
-    flex: 1 1 100%; /* Take full width */
+    order: 3;
+    flex: 1 1 100%;
     width: auto;
     justify-content: center;
-    margin: 10px 0; /* Add margin */
+    margin: 10px 0;
   }
+
   .music-player-footer .volume-controls .volume-slider {
-    max-width: 150px; /* Allow a bit more space for slider */
+    max-width: 150px;
   }
 
   .music-player-footer .player-settings {
-    order: 5; /* Order settings last */
-    flex: 1 1 100%; /* Take full width */
+    order: 5;
+    flex: 1 1 100%;
     margin-left: 0;
     justify-content: center;
     gap: 15px;
-    margin-top: 10px; /* Space above settings */
+    margin-top: 10px;
   }
-  /* Ensure all settings buttons are visible on smaller screens, but smaller */
-  .music-player-footer .player-settings #loopBtn,
-  .music-player-footer .player-settings #shuffleBtn,
-  .music-player-footer .player-settings #playbackSpeedBtn,
-  .music-player-footer .player-settings #viewQueueBtn,
-  .music-player-footer .player-settings #fullscreenBtn,
-  .music-player-footer .player-settings #toggleMiniPlayerBtn {
+
+  .music-player-footer .player-settings button {
     opacity: 1;
     visibility: visible;
     width: 35px;
     height: 35px;
     font-size: 1em;
   }
-  .music-player-footer .player-settings #playbackSpeedBtn span {
+
+  .music-player-footer .player-settings .playback-speed-control span {
     font-size: 0.8em;
   }
-  /* Adjust content padding bottom for wrapping footer */
-  :root {
-    --content-padding-bottom: 250px; /* Adjust as needed for multi-line footer */
-  }
 
-  .playlist-detail-section .playlist-header h1,
-  .artist-detail-section .artist-header h1 {
-    /* [MODIFIED] Added artist-header */
-    font-size: 2em;
-  }
-  .playlist-detail-section .playlist-header #playlistNameEditInput {
-    width: calc(100% - 40px);
-  }
-  .playlists-list-section,
-  .playlist-detail-section,
-  .artists-section, /* [NEW] Artists section */
-  .artist-detail-section {
-    /* [NEW] Artist Detail section */
-    padding: 25px;
-  }
-  .playlists-list-section .create-playlist-form,
-  .playlist-detail-section .add-song-to-playlist-form {
-    padding: 0;
-  }
-  /* Search Results Responsiveness */
-  .search-results-section {
-    padding: 25px;
-  }
-  .search-results-section .section-header h2 {
-    font-size: 1.8em;
-  }
+  .release-grid,
+  .artist-grid,
   .search-results-grid {
     gap: 20px;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
+
+  .release-item .cover-art,
+  .artist-item .cover-art,
   .search-result-item .cover-art {
     height: 140px;
   }
-  /* Queue Sidepanel Responsiveness */
+
+  .section-header h2 {
+    font-size: 2em;
+  }
+
   .queue-sidepanel {
     width: 100%;
-  }
-  .queue-item .item-info {
-    flex-wrap: wrap;
-  }
-  .queue-item-index {
-    order: 0;
-  }
-  .queue-cover-art {
-    order: 1;
-    margin-left: 5px;
-  }
-  .queue-text {
-    order: 2;
-    flex-grow: 1;
-    white-space: normal;
-    margin-left: 10px;
-  }
-  .queue-actions {
-    order: 3;
-    margin-left: auto;
-    opacity: 1;
-  }
-  /* Fullscreen button size in footer */
-  .music-player-footer .player-settings #fullscreenBtn,
-  .music-player-footer .player-settings #likeBtn {
-    width: 35px;
-    height: 35px;
-    font-size: 1em;
-  }
-  /* Recently Played */
-  .recently-played-list .section-header h2 {
-    font-size: 1.8em;
-  }
-  /* [NEW] Artists and Artist Detail Responsiveness */
-  .artists-section .section-header h2 {
-    font-size: 1.8em;
-  }
-  .artist-grid {
-    gap: 20px;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
-  .artist-item .cover-art {
-    height: 140px;
-  }
-  .artist-detail-section .section-header h2 {
-    font-size: 1.8em;
   }
 }
 
 @media (max-width: 768px) {
-  /* Sidebar responsive behavior */
   .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
     transform: translateX(-100%);
-    transition: transform 0.3s ease-out;
   }
 
   body.mobile-menu-active .sidebar {
@@ -2241,17 +2030,16 @@ img {
     display: block;
   }
 
-  .navbar .nav-middle {
-    justify-content: flex-end; /* Push search bar to right */
-  }
-  .navbar .nav-middle .search-bar {
-    width: 100%; /* Make search bar full width */
-    max-width: 300px; /* Limit max width */
+  .navbar {
+    padding: 16px 24px;
   }
 
-  /* Adjustments for content area when sidebar is open */
-  .content-area {
-    margin-left: 0; /* No margin from sidebar initially */
+  .navbar .nav-middle {
+    justify-content: flex-end;
+  }
+  .navbar .nav-middle .search-bar {
+    width: 100%;
+    max-width: 300px;
   }
 
   .hero-banner {
@@ -2295,843 +2083,67 @@ img {
     font-size: 2em;
     margin-bottom: 10px;
   }
-  .release-grid {
+
+  .release-grid,
+  .artist-grid,
+  .search-results-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 20px;
   }
-  .release-item .cover-art {
+
+  .release-item .cover-art,
+  .artist-item .cover-art,
+  .search-result-item .cover-art {
     height: 150px;
   }
 
-  /* Player page responsiveness */
   .player-page-content {
     padding: 30px 20px;
     margin: 20px auto;
   }
-  .player-page-content h1 {
-    font-size: 2em;
-  }
-  .player-page-content .artist-on-player {
-    font-size: 1em;
-  }
-  .player-page-content .show-lyrics-btn,
-  .player-page-content #toggleFullscreenPageBtn,
-  .player-page-content .back-link {
-    width: 100%;
-    margin-top: 15px;
-  }
 
   .lyrics-sidepanel {
-    width: 100%; /* Full width on small screens */
-  }
-
-  /* Adjusted for player-info to prevent overlap on smaller screens */
-  .music-player-footer {
-    padding: 10px 20px;
-  }
-  .music-player-footer .player-info {
-    min-width: unset;
-    max-width: 150px;
-    flex: 1 1 auto;
-  }
-  /* Hide volume percentage display on very small screens */
-  .music-player-footer .volume-percentage-display {
-    display: none;
-  }
-
-  /* [FIX] Mini Player: Sembunyikan elemen yang tidak perlu di mode mini */
-  .music-player-footer.mini-mode .player-visualizer-area,
-  .music-player-footer.mini-mode .progress-bar,
-  .music-player-footer.mini-mode .volume-controls {
-    display: none;
-  }
-
-  .music-player-footer .player-settings {
-    flex-grow: 1;
-    justify-content: flex-start;
-    margin-left: 0;
-    gap: 8px; /* Reduce gap between settings buttons */
-  }
-
-  /* Make all settings buttons visible again, but smaller for mobile.
-     If you want some of them *always* hidden on mobile regardless of mini mode,
-     you would override this. */
-  .music-player-footer .player-settings #loopBtn,
-  .music-player-footer .player-settings #shuffleBtn,
-  .music-player-footer .player-settings #playbackSpeedBtn,
-  .music-player-footer .player-settings #viewQueueBtn,
-  .music-player-footer .player-settings #fullscreenBtn,
-  .music-player-footer .player-settings #toggleMiniPlayerBtn {
-    opacity: 1;
-    visibility: visible;
-    width: 30px; /* Smaller size */
-    height: 30px;
-    font-size: 0.9em;
-    margin: 0; /* Remove any specific margins */
-  }
-  .music-player-footer .player-settings #playbackSpeedBtn span {
-    font-size: 0.7em; /* Smaller text for speed display */
-  }
-
-  .playlists-list-section,
-  .playlist-detail-section,
-  .artists-section, /* [NEW] Artists section */
-  .artist-detail-section {
-    /* [NEW] Artist Detail section */
-    padding: 20px;
-  }
-  .playlist-detail-section .playlist-header img,
-  .artist-detail-section .artist-header img {
-    /* [MODIFIED] Added artist-header */
-    width: 120px;
-    height: 120px;
-  }
-  .playlist-detail-section .playlist-header h1,
-  .artist-detail-section .artist-header h1 {
-    /* [MODIFIED] Added artist-header */
-    font-size: 1.8em;
-  }
-  .playlist-detail-section .playlist-header #playlistNameEditInput {
-    width: calc(100% - 20px);
-  }
-  .playlist-item .cover-art {
-    height: 150px;
-    font-size: 2em;
-  }
-  .playlist-item .playlist-actions {
-    opacity: 1;
-    top: 5px;
-    right: 5px;
-  }
-  .playlist-song-list-item .remove-song-from-playlist-btn {
-    opacity: 1;
-    right: 5px;
-    width: 25px;
-    height: 25px;
-    font-size: 0.7em;
-  }
-  /* Search Results Responsiveness */
-  .search-results-section {
-    padding: 15px;
-  }
-  .search-results-section .section-header h2 {
-    font-size: 1.5em;
-  }
-  .search-results-grid {
-    gap: 12px;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-  .search-result-item .cover-art {
-    height: 100px;
-  }
-  /* Queue Sidepanel Responsiveness */
-  .queue-sidepanel {
     width: 100%;
   }
-  .queue-item .item-info {
-    flex-wrap: wrap;
-  }
-  .queue-item-index {
-    order: 0;
-  }
-  .queue-cover-art {
-    order: 1;
-    margin-left: 5px;
-  }
-  .queue-text {
-    order: 2;
-    flex-grow: 1;
-    white-space: normal;
-    margin-left: 10px;
-  }
-  .queue-actions {
-    order: 3;
-    margin-left: auto;
-    opacity: 1;
-  }
-  /* Fullscreen button size in footer */
-  .music-player-footer .player-settings #fullscreenBtn,
-  .music-player-footer .player-settings #likeBtn {
+
+  .music-player-footer .player-settings button {
     width: 30px;
     height: 30px;
     font-size: 0.9em;
+    margin: 0;
   }
-  /* Recently Played */
-  .recently-played-list .section-header h2 {
-    font-size: 1.5em;
-  }
-  /* [NEW] Artists and Artist Detail Responsiveness */
-  .artists-section .section-header h2 {
-    font-size: 1.5em;
-  }
-  .artist-grid {
-    gap: 12px;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-  .artist-item .cover-art {
-    height: 100px;
-  }
-  .artist-detail-section .section-header h2 {
-    font-size: 1.5em;
-  }
-
-  /* Mini mode on mobile: if you want the mini mode to collapse even further on mobile,
-     you'd add specific rules for .music-player-footer.mini-mode within this media query. */
 }
 
 @media (max-width: 480px) {
+  .section-header h2 {
+    font-size: 1.8em;
+  }
+
+  .release-grid,
+  .artist-grid,
+  .search-results-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .hero-banner .banner-content h2 {
+    font-size: 2.2em;
+  }
+
   .playlist-detail-section .playlist-header h1,
   .artist-detail-section .artist-header h1 {
-    /* [MODIFIED] Added artist-header */
     font-size: 1.5em;
   }
+
   .create-playlist-form .text-input,
   .add-song-to-playlist-form .text-input {
     padding: 10px 15px;
     font-size: 0.9em;
   }
+
   .btn.primary,
   .btn.secondary {
     padding: 10px 20px;
     font-size: 0.85em;
   }
-  .playlist-item .item-info a,
-  .playlist-item .item-info .artist {
-    font-size: 0.9em;
-  }
-  /* Queue Sidepanel Responsiveness */
-  .queue-sidepanel {
-    width: 100%;
-  }
-}
-
-/* Custom Scrollbars (Webkit - Chrome, Safari, Edge) */
-::-webkit-scrollbar {
-  width: 8px; /* Lebar scrollbar vertikal */
-  height: 8px; /* Tinggi scrollbar horizontal */
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a2e; /* Warna track scrollbar, sedikit lebih terang dari background utama */
-  border-radius: 10px; /* Sudut membulat pada track */
-}
-
-::-webkit-scrollbar-thumb {
-  background: #535353; /* Warna thumb scrollbar */
-  border-radius: 10px; /* Sudut membulat pada thumb */
-  border: 2px solid #1a1a2e; /* Border agar thumb terlihat "mengambang" di atas track */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #7a7a7a; /* Warna thumb saat di-hover */
-}
-
-/* Custom Scrollbars (Firefox) */
-* {
-  scrollbar-width: thin; /* Buat scrollbar lebih tipis */
-  scrollbar-color: #535353 #1a1a2e; /* thumb-color track-color */
-}
-
-/* === [TAMBAHAN] Animasi untuk Tombol Play/Pause === */
-@keyframes pulse-glow {
-  0% {
-    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.5);
-  }
-  50% {
-    box-shadow: 0 6px 25px rgba(127, 90, 240, 0.8), var(--accent-glow);
-  }
-  100% {
-    box-shadow: 0 4px 15px rgba(127, 90, 240, 0.5);
-  }
-}
-
-/* Terapkan animasi (Anda bisa mengaktifkannya dengan JS saat musik berputar) */
-.music-player-footer .player-controls .play-pause-btn.playing {
-  animation: pulse-glow 2.5s infinite ease-in-out;
-}
-
-/* === [TAMBAHAN] Styling untuk Progress Bar === */
-.progress-track {
-  position: relative;
-}
-
-/* Membuat 'thumb' atau handle di ujung progress bar */
-.progress-fill::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translate(50%, -50%) scale(0); /* Sembunyikan secara default */
-  width: 14px;
-  height: 14px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease;
-}
-
-/* Tampilkan thumb saat progress bar di-hover */
-.progress-track:hover .progress-fill::after {
-  transform: translate(50%, -50%) scale(1);
-}
-
-.progress-track:hover .progress-fill {
-  height: 8px; /* Sedikit membesar saat hover */
-  top: -1px;
-  position: relative;
-}
-
-/* === [TAMBAHAN] Styling untuk Volume Slider === */
-.volume-controls .slider::-webkit-slider-thumb {
-  /* ... (style yang ada) ... */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.volume-controls .slider:hover::-webkit-slider-thumb {
-  transform: scale(1.2); /* Perbesar thumb saat slider di-hover */
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-.volume-controls .slider::-moz-range-thumb {
-  /* ... (style yang ada) ... */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.volume-controls .slider:hover::-moz-range-thumb {
-  transform: scale(1.2);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-/* === [TAMBAHAN] Efek Hover untuk Navigasi Sidebar === */
-.sidebar .main-nav a:hover {
-  transform: translateX(5px); /* Sedikit bergeser ke kanan saat hover */
-  border-left-color: #a18af7; /* Warna border yang lebih cerah saat hover */
-}
-
-/* === [TAMBAHAN] Penyempurnaan Form dan Input === */
-
-/* Transisi pada placeholder saat input aktif (focus) */
-.text-input:focus::placeholder {
-  color: transparent; /* Sembunyikan placeholder dengan transisi halus */
-  transition: color 0.3s ease;
-}
-
-/* Menambahkan efek "klik" yang lebih memuaskan pada tombol utama */
-.btn.primary:active {
-  transform: scale(0.97) translateY(1px); /* Sedikit mengecil saat ditekan */
-  box-shadow: 0 2px 8px rgba(127, 90, 240, 0.3); /* Shadow lebih kecil */
-}
-
-/* === [TAMBAHAN] Header Halaman Detail Dinamis === */
-
-/* Header dasar dengan transisi */
-.artist-detail-section .artist-header,
-.playlist-detail-section .playlist-header,
-.album-detail-section .album-header {
-  transition: var(--transition-smooth); /* Menggunakan variabel global kita */
-  position: relative;
-  overflow: hidden; /* Penting untuk efek gradien */
-}
-
-/* Efek gradien halus saat di-hover */
-.artist-detail-section .artist-header:hover,
-.playlist-detail-section .playlist-header:hover,
-.album-detail-section .album-header:hover {
-  transform: scale(1.01); /* Sedikit membesar */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  background: radial-gradient(
-      circle at top left,
-      rgba(127, 90, 240, 0.1),
-      transparent 30%
-    ),
-    linear-gradient(135deg, #1f1f2b, #15151e);
-}
-
-/* === [TAMBAHAN] Styling untuk Pesan Kosong (Empty State) === */
-.empty-state-message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 50px 20px;
-  margin-top: 30px;
-  background-color: rgba(40, 40, 48, 0.3); /* Background transparan */
-  border-radius: 12px;
-  border: 1px dashed #3a3a45; /* Border putus-putus */
-  color: #b3b3b3;
-}
-
-/* Menambahkan ikon dari Font Awesome sebelum teks */
-.empty-state-message::before {
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  content: "\f001"; /* Kode untuk ikon musik */
-  font-size: 2.5em;
-  color: #7f5af0;
-  margin-bottom: 20px;
-  opacity: 0.5;
-}
-
-/* === [TAMBAHAN] Peningkatan Aksesibilitas & Interaksi === */
-
-/* Membuat scroll pada halaman menjadi halus saat menekan link anchor */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Memberikan outline yang jelas untuk pengguna keyboard, tanpa mengganggu pengguna mouse */
-*:focus-visible {
-  outline: 2px solid #a18af7;
-  outline-offset: 3px;
-  border-radius: 4px; /* Agar outline mengikuti bentuk elemen */
-}
-
-/* === [TAMBAHAN] Efek Logo Glowing === */
-
-/* 1. Definisikan animasi untuk efek "pulsing glow" */
-@keyframes logo-pulse-glow {
-  0% {
-    /* Bayangan awal untuk gambar dan teks */
-    filter: drop-shadow(0 0 4px rgba(161, 138, 247, 0.6));
-    text-shadow: 0 0 4px rgba(161, 138, 247, 0.6),
-      0 0 8px rgba(127, 90, 240, 0.4);
-  }
-  50% {
-    /* Bayangan lebih intens di tengah animasi */
-    filter: drop-shadow(0 0 12px rgba(161, 138, 247, 0.9));
-    text-shadow: 0 0 12px rgba(161, 138, 247, 0.9),
-      0 0 20px rgba(127, 90, 240, 0.6);
-  }
-  100% {
-    /* Kembali ke bayangan awal */
-    filter: drop-shadow(0 0 4px rgba(161, 138, 247, 0.6));
-    text-shadow: 0 0 4px rgba(161, 138, 247, 0.6),
-      0 0 8px rgba(127, 90, 240, 0.4);
-  }
-}
-
-/* 2. Terapkan animasi pada gambar logo */
-/* Menggunakan filter: drop-shadow agar glow mengikuti bentuk gambar, bukan box-nya */
-.sidebar .logo img {
-  animation: logo-pulse-glow 4s infinite ease-in-out;
-  transition: transform 0.3s ease; /* Transisi untuk hover */
-}
-
-/* === [TAMBAHAN] Modernisasi Tampilan Music Player === */
-
-/* 1. Efek Kaca Buram (Glassmorphism) pada Footer Player */
-.music-player-footer {
-  /* Mengganti background solid dengan background semi-transparan */
-  background: rgba(28, 28, 32, 0.65); /* Warna dasar dengan transparansi */
-
-  /* Efek blur untuk konten di belakangnya */
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  backdrop-filter: blur(18px) saturate(150%);
-
-  /* Border halus di bagian atas untuk memberikan definisi */
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-
-  /* Shadow yang lebih lembut untuk efek 'mengambang' */
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
-}
-
-/* 2. Membuat Album Art Lebih Interaktif */
-.music-player-footer .player-cover {
-  border-radius: 8px; /* Sedikit lebih rounded */
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-    box-shadow 0.4s ease;
-}
-
-/* Efek 'pop out' saat kursor di atas player */
-.music-player-footer:hover .player-cover {
-  transform: scale(1.15) rotate(-4deg);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-}
-
-/* Tambahkan class 'is-playing' dengan JS saat musik berputar untuk efek glow */
-.music-player-footer.is-playing .player-cover {
-  box-shadow: 0 0 20px rgba(127, 90, 240, 0.6), 0 0 30px rgba(127, 90, 240, 0.4);
-}
-
-/* 3. Menyempurnakan Area Visualizer */
-.player-visualizer-area {
-  background: transparent; /* Hapus background solid agar efek blur terlihat */
-  border: 1px solid rgba(255, 255, 255, 0.05); /* Border yang sangat halus */
-
-  /* Overlay gelap agar visualizer tetap terlihat jelas */
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
-  border-radius: 12px; /* Sudut lebih membulat */
-}
-
-/* 4. Membuat Tombol Kontrol (Loop, Shuffle, dll) Lebih Estetik */
-.player-settings button {
-  background-color: transparent;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #b3b3b3;
-  position: relative;
-  /* Menggunakan variabel transisi global kita */
-  transition: var(--transition-smooth);
-}
-
-.player-settings button:hover {
-  color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.1);
-  transform: translateY(-3px); /* Efek angkat lebih terasa */
-}
-
-/* Style untuk tombol yang sedang aktif (misal: loop/shuffle ON) */
-.player-settings button.active {
-  color: #7f5af0; /* Warna aksen utama */
-  background-color: rgba(127, 90, 240, 0.15);
-}
-
-/* Menambahkan titik indikator di bawah tombol aktif */
-.player-settings button.active::after {
-  content: "";
-  position: absolute;
-  bottom: 4px;
-  width: 5px;
-  height: 5px;
-  background-color: #7f5af0;
-  border-radius: 50%;
-  box-shadow: 0 0 5px #7f5af0;
-}
-
-/* 5. Sedikit Peningkatan pada Judul Lagu */
-.current-track-name {
-  transition: color 0.3s ease;
-}
-
-.music-player-footer:hover .current-track-name {
-  color: #a18af7; /* Ganti warna judul saat player di-hover */
-}
-
-/* === [SARAN] Gradasi Halus pada Latar Belakang === */
-body,
-.content-area {
-  /* Gradasi dari warna asli ke warna yang sedikit lebih terang/berbeda di bagian bawah */
-  background: linear-gradient(180deg, #0b0b0e 0%, #121216 100%);
-}
-
-/* === [SARAN] Peningkatan Daftar Lagu Interaktif === */
-.song-list-item {
-  position: relative; /* Diperlukan untuk pseudo-element */
-  overflow: hidden; /* Menyembunyikan elemen yang keluar dari batas */
-}
-
-/* Menambahkan indikator "play" saat hover */
-.song-list-item:hover::before {
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  content: "\f04b"; /* Ikon Play */
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.1em;
-  color: #7f5af0;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-/* Sembunyikan nomor urut saat hover agar bisa digantikan ikon play */
-.song-list-item:hover > span:first-child {
-  opacity: 0;
-}
-
-/* === [SARAN] Animasi Kemunculan Judul Bagian === */
-
-/* Definisikan animasi 'fade-in-up' */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Terapkan animasi (dapat dikontrol lebih lanjut dengan JavaScript jika perlu) */
-.section-header {
-  /* Anda bisa menambahkan ini jika ingin animasi otomatis, 
-     namun lebih baik dikontrol via JS untuk performa */
-  animation: fade-in-up 0.6s ease-out forwards;
-  /* Atur opacity awal ke 0 jika ingin animasi bekerja saat scroll (perlu JS) */
-  /* opacity: 0; */
-}
-
-/* === [SARAN] Polesan Akhir pada Tombol Navigasi === */
-.section-header .see-all,
-.back-button-home,
-.back-button-albums,
-.back-button-artists {
-  display: inline-flex; /* Memastikan alignment yang benar */
-  align-items: center;
-  gap: 6px; /* Jarak antara teks dan ikon */
-  padding: 8px 16px;
-  border-radius: 20px;
-  background-color: rgba(40, 40, 48, 0.5); /* Background semi-transparan */
-  transition: var(--transition-smooth);
-}
-
-.section-header .see-all:hover,
-.back-button-home:hover,
-.back-button-albums:hover,
-.back-button-artists:hover {
-  background-color: #d5d5d5;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(127, 90, 240, 0.3);
-  transform: translateY(-2px);
-  text-decoration: none; /* Hapus underline saat hover */
-}
-
-/* === [SARAN] Indikator Lagu "Now Playing" === */
-
-/* Wadah untuk bar equalizer */
-.now-playing-indicator {
-  width: 24px;
-  height: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-left: 12px;
-  opacity: 0; /* Sembunyi secara default */
-  transition: opacity 0.3s ease;
-}
-
-/* Style untuk setiap bar */
-.now-playing-indicator .bar {
-  width: 4px;
-  background-color: #7f5af0;
-  border-radius: 2px;
-  animation: equalize 1.2s infinite ease-in-out;
-}
-
-/* Atur delay animasi agar bar bergerak tidak bersamaan */
-.now-playing-indicator .bar:nth-child(1) {
-  animation-delay: -0.4s;
-}
-.now-playing-indicator .bar:nth-child(2) {
-  animation-delay: -0.2s;
-}
-.now-playing-indicator .bar:nth-child(3) {
-  animation-delay: -0.6s;
-}
-.now-playing-indicator .bar:nth-child(4) {
-  animation-delay: -0.1s;
-}
-
-/* Animasi untuk gerakan naik-turun bar */
-@keyframes equalize {
-  0% {
-    height: 4px;
-  }
-  20% {
-    height: 20px;
-  }
-  40% {
-    height: 8px;
-  }
-  60% {
-    height: 16px;
-  }
-  80% {
-    height: 6px;
-  }
-  100% {
-    height: 4px;
-  }
-}
-
-/* Tampilkan indikator pada item lagu yang memiliki class .is-playing */
-.song-list-item.is-playing .now-playing-indicator {
-  opacity: 1;
-}
-
-/* Ganti warna judul lagu yang sedang diputar */
-.song-list-item.is-playing .play-link {
-  color: #7f5af0;
-}
-
-/* === [SARAN] Animasi Hero Banner Sinematik (Ken Burns) === */
-
-/* Definisikan animasi zoom-in */
-@keyframes ken-burns-zoom {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.15);
-  }
-}
-
-/* Terapkan animasi pada gambar yang sedang aktif */
-.hero-banner .carousel-images img.active {
-  opacity: 1;
-  /* Jalankan animasi selama 10 detik, lalu berhenti di akhir */
-  animation: ken-burns-zoom 10s ease-in-out forwards;
-}
-
-/* === [SARAN] Animasi Panel Antrian (Queue) === */
-
-/* Definisikan animasi untuk item antrian */
-@keyframes queue-item-enter {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Terapkan animasi saat panel terbuka */
-.queue-sidepanel.open .queue-item {
-  /* Terapkan animasi pada setiap item */
-  animation: queue-item-enter 0.5s ease-out forwards;
-}
-
-/* Atur delay agar setiap item muncul satu per satu */
-/* Anda bisa menambahkan lebih banyak jika perlu */
-.queue-sidepanel.open .queue-item:nth-child(1) {
-  animation-delay: 0.1s;
-}
-.queue-sidepanel.open .queue-item:nth-child(2) {
-  animation-delay: 0.15s;
-}
-.queue-sidepanel.open .queue-item:nth-child(3) {
-  animation-delay: 0.2s;
-}
-.queue-sidepanel.open .queue-item:nth-child(4) {
-  animation-delay: 0.25s;
-}
-.queue-sidepanel.open .queue-item:nth-child(5) {
-  animation-delay: 0.3s;
-}
-/* ...dan seterusnya */
-
-/* === [SARAN] Efek Skeleton Loading === */
-
-/* Animasi untuk efek kilau (shimmer) */
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-/* Class dasar untuk placeholder skeleton */
-.skeleton {
-  background-color: #282830; /* Warna dasar placeholder */
-  border-radius: 8px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Efek kilau yang bergerak */
-.skeleton::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, #282830 8%, #3a3a45 18%, #282830 33%);
-  background-size: 2000px 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Ukuran spesifik untuk berbagai elemen */
-.skeleton-card {
-  width: 100%;
-  height: 280px; /* Sesuaikan dengan tinggi kartu musik Anda */
-  margin-bottom: 32px;
-}
-
-.skeleton-list-item {
-  width: 100%;
-  height: 60px; /* Sesuaikan dengan tinggi item daftar lagu */
-  margin-bottom: 10px;
-}
-
-/* === [SARAN] Tooltip Kustom === */
-
-/* Posisikan tooltip relatif terhadap tombol */
-[data-tooltip] {
-  position: relative;
-}
-
-/* Style untuk tooltip */
-[data-tooltip]::after {
-  content: attr(data-tooltip); /* Ambil teks dari atribut */
-  position: absolute;
-  bottom: calc(100% + 8px); /* Posisikan di atas tombol */
-  left: 50%;
-  transform: translateX(-50%) scale(0.8); /* Mulai dari ukuran kecil */
-
-  background-color: #7f5af0; /* Warna aksen */
-  color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.85em;
-  font-weight: 500;
-  white-space: nowrap;
-
-  opacity: 0;
-  pointer-events: none; /* Agar tidak mengganggu klik */
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-/* Tampilkan tooltip saat tombol di-hover */
-[data-tooltip]:hover::after {
-  opacity: 1;
-  transform: translateX(-50%) scale(1); /* Kembali ke ukuran normal */
-}
-/* === [SARAN] Transisi Halaman Halus === */
-
-/* Definisikan animasi fade-in untuk konten baru */
-@keyframes page-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Terapkan pada area konten dinamis */
-#dynamic-content-area {
-  animation: page-fade-in 0.5s ease-in-out;
-}
-
-/* === [SARAN] Peningkatan Dropdown (Select) === */
-
-/* Wadah untuk dropdown kustom jika Anda ingin membuatnya dari <div> */
-.custom-select-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-/* Menambahkan ikon panah yang lebih baik */
-.visualizer-controls select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding-right: 30px; /* Beri ruang untuk ikon panah */
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b3b3b3%22%20d%3D%22M287%2C118.7L159.9%2C245.9c-2.2%2C2.2-4.8%2C3.3-7.5%2C3.3s-5.3-1.1-7.5-3.3L5.3%2C118.7C1.8%2C115.2%2C0%2C110.6%2C0%2C105.7c0-4.8%2C1.8-9.4%2C5.3-12.9l22.7-22.7c3.5-3.5%2C8.1-5.3%2C12.9-5.3c4.8%2C0%2C9.4%2C1.8%2C12.9%2C5.3l108%2C108l108-108c3.5-3.5%2C8.1-5.3%2C12.9-5.3c4.8%2C0%2C9.4%2C1.8%2C12.9%2C5.3l22.7%2C22.7c3.5-3.5%2C5.3%2C8.1%2C5.3%2C12.9C292.4%2C110.6%2C290.6%2C115.2%2C287%2C118.7z%22/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 10px;
-  cursor: pointer;
 }
