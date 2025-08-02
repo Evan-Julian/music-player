@@ -1,0 +1,32 @@
+<section class="artists-section" style="padding: 40px">
+  <div class="section-header">
+    <h2>All Artists</h2>
+    <a href="#home" class="see-all back-button-home" data-route="home">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+  </div>
+  <div class="artist-grid release-grid">
+    {% if artists %} {% for artist in artists %}
+    <div class="release-item artist-item" data-artist-name="{{ artist.name }}">
+      <img
+        src="{{ artist.cover_url }}"
+        alt="{{ artist.name }} Cover"
+        class="cover-art"
+      />
+      <div class="item-info">
+        <a
+          href="#artist/{{ artist.name }}"
+          class="artist-link"
+          data-artist-name="{{ artist.name }}"
+          >{{ artist.name }}</a
+        >
+        <p class="song-count">Total Songs: {{ artist.song_count }}</p>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p style="margin-top: 20px; color: #b3b3b3; text-align: center">
+      No artists found.
+    </p>
+    {% endif %}
+  </div>
+</section>

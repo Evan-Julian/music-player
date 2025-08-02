@@ -1,0 +1,36 @@
+<section class="recently-played-list" style="padding: 40px">
+  <div class="section-header">
+    <h2>Album By (Artist)</h2>
+    <a href="#home" class="see-all back-button-home" data-route="home">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+  </div>
+
+  <div class="release-grid">
+    {# Re-use release-grid style #} {% if albums %} {% for album in albums %}
+    <div class="release-item album-item">
+      {# Tambahkan album-item class #}
+      <img
+        src="{{ album.cover_url }}"
+        alt="{{ album.name }} Cover"
+        class="cover-art"
+      />
+      <div class="item-info">
+        {# Link ke detail album (menggunakan nama artis sebagai album name) #}
+        <a
+          href="#album/{{ album.name | urlencode }}"
+          class="album-link"
+          data-album-name="{{ album.name }}"
+          >{{ album.name }}</a
+        >
+        <p class="artist">{{ album.artist }}</p>
+        {# DI SINI PERUBAHANNYA: Mengganti teks "songs" dengan "Total Songs: X"
+        #}
+        <p class="song-count">Total Songs: {{ album.song_count }}</p>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p>No albums (artists) found.</p>
+    {% endif %}
+  </div>
+</section>

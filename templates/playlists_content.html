@@ -1,0 +1,52 @@
+<section class="recently-played-list" style="padding: 40px">
+  <div class="section-header">
+    <h2>Playlist</h2>
+    <a href="#home" class="see-all back-button-home" data-route="home">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+  </div>
+
+  <div class="create-playlist-form">
+    <input
+      type="text"
+      id="newPlaylistName"
+      placeholder="New playlist name"
+      class="text-input"
+    />
+    <button id="createPlaylistBtn" class="btn primary">
+      <i class="fas fa-plus"></i> Create Playlist
+    </button>
+  </div>
+
+  <div class="playlist-grid release-grid">
+    {% if playlists %} {% for playlist in playlists %}
+    <div
+      class="release-item playlist-item"
+      data-playlist-id="{{ playlist.id }}"
+    >
+      <img
+        src="{{ playlist.cover_url if playlist.cover_url else url_for('static', filename='images/covers/default_playlist_cover.jpg') }}"
+        alt="{{ playlist.name }} Cover"
+        class="cover-art"
+      />
+      <div class="item-info">
+        {# Link ke detail playlist #}
+        <a
+          href="#playlist/{{ playlist.id }}"
+          class="playlist-link"
+          data-playlist-id="{{ playlist.id }}"
+          >{{ playlist.name }}</a
+        >
+        <p class="song-count">Total Songs: {{ playlist.song_count }}</p>
+        <div class="playlist-actions">
+          <button class="delete-playlist-btn" title="Delete Playlist">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p>No playlists found. Create your first one!</p>
+    {% endif %}
+  </div>
+</section>

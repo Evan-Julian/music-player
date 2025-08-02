@@ -1,0 +1,64 @@
+<section class="recently-played-list" style="padding: 40px">
+  <div class="section-header">
+    <h2>Recently Played</h2>
+    <a href="#home" class="see-all back-button-home" data-route="home">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+  </div>
+  <div class="song-list-detail">
+    {% if songs %} {% for song in songs %}
+    <div
+      class="song-list-item"
+      data-song-name="{{ song.name_no_ext }}"
+      style="
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: #1a1a2e;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+      "
+      onmouseover="this.style.backgroundColor='#2c2c44'"
+      onmouseout="this.style.backgroundColor='#1a1a2e'"
+    >
+      <span
+        style="
+          width: 30px;
+          text-align: center;
+          color: #b0b0c0;
+          font-size: 0.9em;
+        "
+        >{{ loop.index }}</span
+      >
+      <div style="flex-grow: 1; margin-left: 15px">
+        <a
+          href="#play/{{ song.name_no_ext }}"
+          class="play-link"
+          data-song-name="{{ song.name_no_ext }}"
+          style="
+            font-weight: 600;
+            color: #e2e2e2;
+            display: block;
+            font-size: 1em;
+          "
+          >{{ song.title }}</a
+        >
+        <p style="font-size: 0.85em; color: #b8b8c8">{{ song.artist }}</p>
+      </div>
+      <span style="color: #b0b0c0; font-size: 0.85em">{{ song.duration }}</span>
+      <button
+        class="add-to-queue-btn"
+        data-song-name="{{ song.name_no_ext }}"
+        title="Add to Queue"
+      >
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+    {% endfor %} {% else %}
+    <p style="margin-top: 20px; color: #b3b3b3; text-align: center">
+      No recently played songs.
+    </p>
+    {% endif %}
+  </div>
+</section>

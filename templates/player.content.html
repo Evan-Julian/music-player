@@ -1,0 +1,61 @@
+<div class="player-page-content container">
+  <h1>Now Playing: {{ song_title }}</h1>
+  <p class="artist-on-player">{{ song_artist }}</p>
+  <audio controls id="audioPlayer" style="display: none"></audio>
+
+  <canvas
+    id="playerVisualizerCanvas"
+    style="
+      width: 100%;
+      height: 100px;
+      background-color: #12121d; /* Adjusted to match darker theme */
+      border-radius: 8px;
+      margin-top: 20px;
+    "
+  ></canvas>
+
+  <div
+    class="visualizer-controls"
+    style="
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+    "
+  >
+    <label for="visualizerType" style="color: #e2e2e2; font-weight: 500"
+      >Visualizer Type:</label
+    >
+    <select
+      id="visualizerType"
+      class="text-input"
+      style="
+        padding: 8px 12px;
+        border-radius: 20px;
+        background-color: #282830;
+        color: #e2e2e2;
+        border: 1px solid #3a3a45;
+        outline: none;
+      "
+    >
+      <option value="bars">Bars</option>
+      <option value="waves">Waves</option>
+      <option value="circles">Circles</option>
+    </select>
+  </div>
+
+  <div
+    style="margin-top: 30px; display: flex; justify-content: center; gap: 15px"
+  >
+    <button
+      id="toggleFullscreenPageBtn"
+      class="btn secondary"
+      style="margin-left: 10px"
+    >
+      Toggle Fullscreen <i class="fas fa-expand"></i>
+    </button>
+  </div>
+
+  <a href="#home" class="back-link" data-route="home">Back to Home</a>
+</div>

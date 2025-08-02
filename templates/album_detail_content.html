@@ -1,0 +1,98 @@
+<section class="album-detail-section" style="padding: 40px">
+  <div
+    class="album-header"
+    style="display: flex; align-items: center; margin-bottom: 30px; gap: 30px"
+  >
+    <img
+      src="{{ album_cover_url }}"
+      alt="{{ album_name }} Cover"
+      style="
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      "
+    />
+    <div>
+      <p
+        style="
+          color: #b0b0c0;
+          font-size: 0.9em;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        "
+      >
+        Artist Profile
+      </p>
+      <h1 style="font-size: 3em; color: #7f5af0; margin: 5px 0">
+        {{ album_name }}
+      </h1>
+      <p style="font-size: 1.2em; color: #e2e2e2">
+        Total Songs: <span style="font-weight: 600">{{ songs|length }}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-bottom: 20px">
+    <h2 style="font-size: 1.8em; color: #e2e2e2">Songs by {{ album_name }}</h2>
+    <a href="#albums" class="see-all back-button-albums" data-route="albums"
+      >← Back to Albums</a
+    >
+  </div>
+
+  <div class="song-list-detail">
+    {% if songs %} {% for song in songs %}
+    <div
+      class="song-list-item"
+      data-song-name="{{ song.name_no_ext }}"
+      style="
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: #1a1a2e;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+      "
+      onmouseover="this.style.backgroundColor='#2c2c44'"
+      onmouseout="this.style.backgroundColor='#1a1a2e'"
+    >
+      <span
+        style="
+          width: 30px;
+          text-align: center;
+          color: #b0b0c0;
+          font-size: 0.9em;
+        "
+        >{{ loop.index }}</span
+      >
+      <div style="flex-grow: 1; margin-left: 15px">
+        <a
+          href="#play/{{ song.name_no_ext }}"
+          class="play-link"
+          data-song-name="{{ song.name_no_ext }}"
+          style="
+            font-weight: 600;
+            color: #e2e2e2;
+            display: block;
+            font-size: 1em;
+          "
+          >{{ song.title }}</a
+        >
+        <p style="font-size: 0.85em; color: #b8b8c8">{{ song.artist }}</p>
+      </div>
+      <span style="color: #b0b0c0; font-size: 0.85em">{{ song.duration }}</span>
+      <button
+        class="add-to-queue-btn"
+        data-song-name="{{ song.name_no_ext }}"
+        title="Add to Queue"
+      >
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+    {% endfor %} {% else %}
+    <p>No songs found for this artist.</p>
+    {% endif %}
+  </div>
+</section>

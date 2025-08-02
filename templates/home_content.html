@@ -1,0 +1,64 @@
+<section class="hero-banner">
+  <div class="carousel-images">
+    <img src="/static/images/Header.jpg" alt="Banner Image 1" class="active" />
+    <img src="/static/images/Header2.jpg" alt="Banner Image 2" />
+    <img src="/static/images/Header3.jpg" alt="Banner Image 3" />
+  </div>
+
+  <div class="banner-content">
+    <h2>Discover Your Rhythm. Listen, Feel.</h2>
+    <p>
+      Explore an endless collection of music, from the latest hits to hidden
+      gems. Get an immersive listening experience, anytime, anywhere.
+    </p>
+  </div>
+  <div class="banner-controls">
+    <span class="dot active" data-index="0"></span>
+    <span class="dot" data-index="1"></span>
+    <span class="dot" data-index="2"></span>
+  </div>
+</section>
+
+<section class="new-releases">
+  <div class="section-header">
+    <h2>New Releases</h2>
+    <a href="#all-songs" class="see-all" data-route="all-songs"
+      >See all &rarr;</a
+    >
+  </div>
+  <div class="release-grid">
+    {% if songs %} {% for song in songs %}
+    <div class="release-item" data-song-name="{{ song.name_no_ext }}">
+      <img
+        src="{{ url_for('static', filename='images/covers/' + song.name_no_ext + '.jpg') }}"
+        alt="{{ song.title }} Cover Art"
+        class="cover-art"
+      />
+      <div class="item-info">
+        <a
+          href="#play/{{ song.name_no_ext }}"
+          class="play-link"
+          data-song-name="{{ song.name_no_ext }}"
+          >{{ song.title }}</a
+        >
+        <p class="artist">{{ song.artist }}</p>
+        <p
+          class="song-duration"
+          style="font-size: 0.8em; color: #b0b0c0; margin-top: 2px"
+        >
+          {{ song.duration }}
+        </p>
+        <button
+          class="add-to-queue-btn"
+          data-song-name="{{ song.name_no_ext }}"
+          title="Add to Queue"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p>No songs found.</p>
+    {% endif %}
+  </div>
+</section>

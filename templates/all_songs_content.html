@@ -1,0 +1,44 @@
+<section class="recently-played-list" style="padding: 40px">
+  <div class="section-header">
+    <h2>All Songs</h2>
+    <a href="#home" class="see-all back-button-home" data-route="home">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+  </div>
+
+  <div class="release-grid">
+    {% if songs %} {% for song in songs %}
+    <div class="release-item" data-song-name="{{ song.name_no_ext }}">
+      <img
+        src="{{ url_for('static', filename='images/covers/' + song.name_no_ext + '.jpg') }}"
+        alt="{{ song.title }} Cover Art"
+        class="cover-art"
+      />
+      <div class="item-info">
+        <a
+          href="#play/{{ song.name_no_ext }}"
+          class="play-link"
+          data-song-name="{{ song.name_no_ext }}"
+          >{{ song.title }}</a
+        >
+        <p class="artist">{{ song.artist }}</p>
+        <p
+          class="song-duration"
+          style="font-size: 0.8em; color: #b0b0c0; margin-top: 2px"
+        >
+          {{ song.duration }}
+        </p>
+        <button
+          class="add-to-queue-btn"
+          data-song-name="{{ song.name_no_ext }}"
+          title="Add to Queue"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <p>No songs found.</p>
+    {% endif %}
+  </div>
+</section>
