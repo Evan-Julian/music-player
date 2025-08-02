@@ -5,7 +5,7 @@ This project is designed to deliver a sleek, user-friendly experience for listen
 
 ## 🖼️ Screenshot
 
-![Music Player Preview](preview.jpg) <!-- Ganti dengan nama file atau URL gambar kamu -->
+![Music Player Preview](Fullpage.png) 
 
 ## 🎯 Description
 
@@ -39,7 +39,3 @@ To run this project locally:
 4. **Open the local server::**
    ```bash
    http://127.0.0.1:5000
-
-
-
-
